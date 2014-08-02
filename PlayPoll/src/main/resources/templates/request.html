@@ -1,0 +1,86 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Title</title>
+  
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+  
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="javascript:void(0);">AnyPlayPoll </a>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <form th:action="@{${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + (#httpServletRequest.getServerPort() == 80 || #httpServletRequest.getServerPort() == 443 ? '' : ':' + #httpServletRequest.getServerPort()) + '/response/'} + ${survey.surveyId}}" action="" method="POST" id="ss-form" target="_self" onsubmit="">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h2 th:inline="text">
+                [[${survey.title}]]<br /> <small th:text="${survey.description}"></small>
+              </h2>
+            </div>
+            <ul class="list-group">
+              <li class="list-group-item" th:each="question,iterStat : ${questions}">
+                <blockquote>
+                  <p th:inline="text">[[${iterStat.count}]]. [[${question['title']}]]</p>
+                  <footer th:if="${question['description']}" th:text="${question['description']}"></footer>
+                </blockquote>
+                <div class="" th:switch="${question.type}"  th:inline="text">
+                  <div th:if="${question['type'].toString()} =='TEXT'">
+                    <input type="text" th:name="${question['questionId']}" class="form-control" placeholder="입력해주세요." />
+                  </div>
+                  <div th:if="${question['type'].toString()} == 'PARAGRAPH_TEXT'">
+                    <textarea class="form-control" th:name="${question['questionId']}" rows="3" placeholder="입력해주세요."></textarea>
+                  </div>
+                  <div th:if="${question['type'].toString()} == 'MULTIPLE_CHOICE'" th:each="option,iterStat : ${question['options']}">
+                    <div class="radio">
+                      <label> <input type="radio" th:name="${question['questionId']}" th:id="'answer-' + ${question['questionId']} + '-' + ${iterStat.count}" th:value="${option['text']}" th:text="${option['text']}"/>
+                      </label>
+                    </div>
+                  </div>
+                  <div th:if="${question['type'].toString()} == 'CHECKBOXES'">
+                    <div class="checkbox" th:each="option,iterStat : ${question['options']}">
+                      <label> <input type="checkbox" th:name="${question['questionId']}" th:id="'answer-' + ${question['questionId']} + '-' + ${iterStat.count}" th:value="${option['text']}" th:text="${option['text']}"/>
+                      </label>
+                    </div>
+                  </div>
+                  <div th:if="${question['type'].toString()} == 'DROPDOWN'">
+                    <select class="form-control" th:name="${question['questionId']}" id="question-type">
+                      <option value="">선택하세요.</option>
+                      <option th:each="option : ${question['options']}" th:value="${option['text']}" th:text="${option['text']}"></option>
+                    </select>
+                  </div>
+                </div>  
+              </li>
+            </ul>
+          </div>
+          <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-upload"></span> 보내기</button>
+        </form>
+      </div>
+    </div>
+    <br />  
+  </div>
+  <hr/>
+  <footer class="text-center">
+    <div class="container">
+      <p>Copyright © AnyPlayPoll Team.</p>
+      <br />
+    </div>
+  </footer>
+</body>
+</html>

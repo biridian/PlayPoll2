@@ -1,0 +1,73 @@
+<div class="modal fade" id="create-poll-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">설문 만들기</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" role="form" ng-hide="loading">
+		  <div class="form-group">
+		    <label for="poll-title" class="col-sm-3 control-label">제목</label>
+		    <div class="col-sm-9">
+		      <input type="text" class="form-control" id="poll-title" placeholder="제목을 입력하세요." ng-model="surveyTitle" ng-keyup="$event.keyCode == 13 && surveyTitle.length > 0 ? createSurvey() : ''">
+		    </div>
+		  </div>
+		</form>
+		<div id="spinner" style="height:50px;" ng-show="loading"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-primary" ng-click="createSurvey()" ng-disabled="!surveyTitle || surveyTitle.length == 0">생성</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="row">
+  <div class=col-md-12>
+    <h1>설문 목록</h1>
+    <hr/>
+    <div class="table-responsive">
+      <table class="table table-striped table-vert-center">
+        <thead>
+          <tr>
+            <th class="col-md-1">#</th>
+            <th class="col-md-3">제목</th>
+            <th class="col-md-2"></th>
+            <th class="col-md-2">생성일</th>
+            <th class="col-md-1">상태</th>
+            <th class="col-md-2"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="survey in surveys">
+            <td>{{$index + 1}}</td>
+            <td>{{survey.title}}</td>
+            <td>
+              <div class="pull-right">
+                <a ng-if="survey.status === '01'" ng-href="#/survey/{{survey.surveyId}}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span> 편집</a>
+                <button class="btn btn-default btn-xs" ng-click="deleteSurvey(survey.surveyId)"><span class="glyphicon glyphicon-trash"></span> 삭제</button>
+              </div>
+            </td>
+            <td>{{survey.createdDate | date:'yyyy-MM-dd'}}</td>
+            <td>{{survey.status === '01' ? '작성 중' : survey.status === '02' ? '설문 중' : survey.status === '03' ? '설문 종료' : ''}}</td>
+            <td>
+              <div class="pull-right">
+                <button ng-if="survey.status === '01'" class="btn btn-info btn-xs" ng-click="changeSurveyStatus(survey, '02')"><span class="glyphicon glyphicon-check"></span> 시작</button>
+                <button ng-if="survey.status === '02'" class="btn btn-warning btn-xs" ng-click="openSendSurveyModal(survey.surveyId)"><span class="glyphicon glyphicon-send"></span> 요청</button>
+                <button ng-if="survey.status === '02'" class="btn btn-danger btn-xs" ng-click="changeSurveyStatus(survey, '03')"><span class="glyphicon glyphicon-time"></span> 종료</button>
+                <a href="#/survey/{{survey.surveyId}}/report" ng-if="survey.status === '03'" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-list-alt"></span> 결과</a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <button type="button" class="btn btn-default" ng-click="openCreateSurveyModal()">
+      <span class="glyphicon glyphicon-pencil"></span> 설문 만들기
+    </button>
+  </div>
+</div>
+<br/>

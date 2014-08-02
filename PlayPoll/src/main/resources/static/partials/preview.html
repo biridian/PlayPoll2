@@ -1,0 +1,57 @@
+<div>
+	<h1>미리보기</h1>
+	<hr />
+
+	<h2>
+		{{survey.title}}<br> <small>{{survey.description}}</small>
+	</h2>
+	<br />
+
+	<div class="panel panel-default" ng-repeat="question in questions">
+		<div class="panel-heading">
+			<h4>
+				{{$index + 1}}. {{question.title}}<br /> <small>{{question.description}}</small>
+			</h4>
+		</div>
+		<div class="panel-body">
+			<div ng-if="question.type == 'TEXT'">
+				<input type="text" class="form-control" placeholder="입력해주세요." />
+			</div>
+
+			<div ng-if="question.type == 'PARAGRAPH_TEXT'">
+				<textarea class="form-control" rows="3" placeholder="입력해주세요.`"></textarea>
+			</div>
+
+			<div ng-if="question.type == 'MULTIPLE_CHOICE'"
+				ng-repeat="option in question.options">
+				<div class="radio">
+					<label> <input type="radio" name="optionsRadios"
+						id="optionsRadios{{$index}}"
+						value="{{$question.questionId}}-{{$index}}">{{option.text}}
+					</label>
+				</div>
+			</div>
+
+			<div ng-if="question.type == 'CHECKBOXES'">
+				<div class="checkbox" ng-repeat="option in question.options">
+					<label> <input type="checkbox"
+						value="{{$question.questionId}}-{{$index}}">{{option.text}}
+					</label>
+				</div>
+			</div>
+
+			<div ng-if="question.type == 'DROPDOWN'">
+				<form class="form-inline">
+					<select class="form-control" id="question-type" ng-model="answer" ng-options="option.text for option in question.options">
+                      <option value="">선택하세요.</option>
+                    </select>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<a href="#/survey/{{surveyId}}" class="btn btn-primary"> <span
+		class="glyphicon glyphicon-chevron-left"></span> 뒤로
+	</a>
+</div>
+<br/>

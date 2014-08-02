@@ -1,0 +1,48 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <h4 class="modal-title">설문 보내기</h4>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal" role="form" ng-hide="create.loading">
+    <div class="form-group">
+      <label for="question-title" class="col-sm-2 control-label">공유 링크</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" ng-model="request.link" onfocus="this.select();" onmouseup="return false;">
+        <span class="help-block">* 링크를 복사 후 공유하여 설문을 요청할 수 있습니다.</span>
+      </div>
+    </div>
+    <hr />
+    <div class="form-group">
+      <label for="question-type" class="col-sm-2 control-label">이메일</label>
+      <div class="col-sm-10">
+        <textarea class="form-control" rows="3" ng-model="request.email"></textarea>
+        <span class="help-block">* 복수의 이메일 주소를 여러 줄로 구분하여 전송할 수 있습니다.</span>
+        <button type="button" class="btn btn-default" ng-click="sendByEmail()">전송</button><p>
+        <div ng-if="emails.isNotValid">
+			<span class="validError" ng-show="emails.isNotValid">잘못된 형식의 이메일 주소입니다 : </span><br>
+  			<span class="validErrorList" ng-repeat="email in emails" ng-show="email.isNotValid">{{email.message}}<br></span>
+  		</div>
+  		<div ng-if="emailResults.isSuccess">
+  			<span class="sendSuccess" ng-show="emailResults.isSuccess">메일 발송에 성공하였습니다. </span>
+  		</div>
+  		<div ng-if="emailResults.isError">
+  			<span class="sendError" ng-show="emailResults.isError">메일 발송에 실패하였습니다 : </span><br>
+  			<span class="sendErrorList" ng-repeat="emailResult in emailResults" ng-show="emailResult.isError">{{emailResult.message}}<br></span>
+  		</div>
+      </div>
+    </div>
+	<hr ng-if="checkMobile()" />
+    <div class="form-group" ng-if="checkMobile()">
+      <label for="share-kakao" class="col-sm-2 control-label">카카오톡</label>
+      <div class="col-sm-10">
+        <a id="kakao-link-btn" href="javascript:void(0);" kakao-link="request.link">
+          <img src="/images/kakaolink_btn_medium.png"/>
+        </a>
+        <span class="help-block">* 카카오톡이 설치된 모바일 디바이스에서 공유할 수 있습니다.</span>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" ng-click="cancel()">닫기</button>
+</div>

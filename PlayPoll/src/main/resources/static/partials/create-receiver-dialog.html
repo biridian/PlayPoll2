@@ -1,0 +1,42 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <h4 class="modal-title">To.</h4>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal" role="form" ng-hide="create.loading">
+    <div class="form-group">
+      <label for="question-title" class="col-sm-1 control-label">Email</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="user-title" placeholder="Enter User Id" ng-model="user.title" ng-keyup="$event.keyCode == 13 && user.title.length > 0 ? enter() : ''">
+      </div>
+      <div>
+      <button type="button" class="btn btn-default" ng-click="enter()">
+        	<span class="glyphicon glyphicon-plus"></span>
+      	</button>
+      </div>
+    </div>
+    <div class="from-group">
+    <label class="col-sm control-label">List</label>
+    <table class="table table-bordered" ng-show="user.lists.length > 0">
+      <thead>
+        <tr>
+          <th class="col-md-1">#</th>
+          <th class="col-md-2">E-mail</th>
+          <th class="col-md-3"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="list in user.lists">
+          <td>{{$index + 1}}</td>
+          <td>{{list.text}}</td>
+          <td><a href="" class="btn btn-default" type="button" ng-click="deleteOption($index)" ><span class="glyphicon glyphicon-trash"></span></a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+  <button type="button" class="btn btn-primary" ng-click="create()" ng-disabled="!user.lists || user.lists.length == 0">Send</button>
+</div>

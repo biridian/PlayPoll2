@@ -1,0 +1,59 @@
+<h1>설문 작성
+  <small class="pull-right">
+  	<div ng-show="saving">
+  		<span class="glyphicon glyphicon-refresh"></span> 저장 중...
+  	</div>
+  	<div id="poll-saved" style="display: none;">
+	  	<span class="glyphicon glyphicon-ok"></span> 저장 됨
+  	</div>
+  </small>
+</h1>
+<hr/>
+<form name="pollDetailForm" role="form">
+  <div class="form-group{{(pollDetailForm.pollTitle.$dirty && pollDetailForm.pollTitle.$invalid) ? ' has-error' : ''}} has-feedback">
+    <label for="poll-title">제목</label>
+    <input type="text" class="form-control" id="poll-title" name="pollTitle" placeholder="Enter title" ng-model="survey.title" ng-trim="true" ng-blur="updatePoll()" required>
+    <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="!pollDetailForm.pollTitle.$valid"></span>
+    <span class="help-block" ng-show="!pollDetailForm.pollTitle.$valid">You have to enter the title.</span>
+  </div>
+  <div class="form-group">
+    <label for="poll-description">설명</label>
+    <textarea class="form-control" id="poll-description" rows="3" placeholder="Enter description" ng-model="survey.description" ng-blur="updatePoll()"></textarea>
+  </div>
+  <div class="from-group">
+    <label>질문</label>
+    <div class="table-responsive">
+      <table class="table table-striped table-vert-center" ng-show="questions.length > 0">
+        <thead>
+          <tr>
+            <th class="col-md-1">#</th>
+            <th class="col-md-2">종류</th>
+            <th class="col-md-9">제목</th>
+            <th class="col-md-2"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="question in questions | orderBy:createdBy">
+            <td>{{$index + 1}}</td>
+            <td>{{questionLabel[question.type]}}</td>
+            <td><a href="#/survey/{{surveyId}}/question/{{question.questionId}}">{{question.title}}</a></td>
+            <td><a href="" class="btn btn-default pull-right" type="button" ng-click="deleteQuestion(question.questionId)" ><span class="glyphicon glyphicon-trash"></span></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <button type="button" class="btn btn-default" ng-click="openModal()">
+    <span class="glyphicon glyphicon-plus"></span> 질문 추가
+  </button>
+  <hr/>
+  <!-- <button type="button" class="btn btn-primary pull-right"> Save </button> -->
+  <div>
+    <a href="#/survey" class="btn btn-primary">
+      <span class="glyphicon glyphicon-chevron-left"></span> 뒤로 
+    </a>
+    <!--<a href="#/survey/{{surveyId}}/preview" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-search"></span> 미리보기</a> -->
+    <button type="button" class="btn btn-warning pull-right" ng-click="openSendSurveyModal(survey.surveyId)"><span class="glyphicon glyphicon-send"></span> 요청</button>
+  </div>
+  <br/>
+</form>

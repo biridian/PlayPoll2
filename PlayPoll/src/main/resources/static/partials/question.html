@@ -1,0 +1,109 @@
+<h1>질문 작성
+  <small class="pull-right">
+  	<div ng-show="saving">
+  		<span class="glyphicon glyphicon-refresh"></span> 저장 중
+  	</div>
+  	<div id="poll-saved" style="display: none;">
+	  	<span class="glyphicon glyphicon-ok"></span> 저장 됨
+  	</div>
+  </small>
+</h1>
+<hr/>
+
+<form name="questionForm" role="form">
+  <div class="form-group{{(questionForm.questionTitle.$dirty && questionForm.questionTitle.$invalid) ? ' has-error' : ''}} has-feedback">
+    <label for="poll-title">제목</label>
+    <input type="text" class="form-control" id="poll-title" name="questionTitle" placeholder="Enter title" ng-model="question.title" ng-trim="true" ng-blur="save()" required>
+    <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="!questionForm.questionTitle.$valid"></span>
+    <span class="help-block" ng-show="!pollDetailForm.pollTitle.$valid">You have to enter the title.</span>
+  </div>
+  <div class="form-group">
+    <label for="poll-description">설명</label>
+    <textarea class="form-control" id="poll-description" rows="3" placeholder="Enter description" ng-model="question.description" ng-blur="save()"></textarea>
+  </div>
+  <div class="form-group">
+    <label for="question-type">종류</label>
+    <select class="form-control" style="width:160px;" id="question-type" ng-model="question.type" ng-options="t.value as t.text for t in questionTypes" ng-change="save()"></select>
+  </div>
+</form>
+
+<form name="optionForm" role="form">
+  <label for="question-type">선택 항목</label>
+  <div class="row">
+
+    <!-- Section to preview options -->
+    <div class="col-xs-6" ng-hide="(question.type != 'TEXT' && question.type != 'PARAGRAPH_TEXT') && (question.options == null || question.options.length == 0)">
+      <div class="panel panel-default">
+        <div class="panel-heading">미리보기</div>
+        <div class="panel-body">
+          <div ng-if="question.type == 'TEXT'">
+            <input type="text" class="form-control" placeholder="Enter answer"/>
+          </div>
+    
+          <!-- Paragraph Type -->
+          <div ng-if="question.type == 'PARAGRAPH_TEXT'">
+            <textarea class="form-control" rows="3" placeholder="Enter answer"></textarea>
+          </div>
+    
+          <!-- Single Choice Type -->
+          <div ng-if="question.type == 'MULTIPLE_CHOICE'" ng-repeat="option in question.options">
+            <div class="radio">
+              <label>
+                <input type="radio" name="optionsRadios" id="optionsRadios{{$index}}" value="{{$question.questionId}}-{{$index}}">{{option.text}}
+              </label>
+            </div>
+          </div>
+    
+          <!-- Multiple Choices Type -->
+          <div ng-if="question.type == 'CHECKBOXES'">
+            <div class="checkbox" ng-repeat="option in question.options">
+              <label>
+                <input type="checkbox" value="{{$question.questionId}}-{{$index}}">{{option.text}}
+              </label>
+            </div>        
+          </div>
+    
+          <!-- Combobox Type -->
+          <div ng-if="question.type == 'DROPDOWN'">
+            <form class="form-inline">
+              <select class="form-control" id="question-type" ng-model="answer" ng-options="option.text for option in question.options">
+                <option value="">선택하세요.</option>
+              </select>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section to input options -->
+    <div class="col-xs-6" ng-hide="question.type == 'TEXT' || question.type == 'PARAGRAPH_TEXT'">
+      <div class="form-group" ng-repeat="option in question.options" >
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Enter option text" ng-model="option.text" ng-trim="true" ng-blur="save()">
+          <span class="input-group-btn">
+            <a href="" class="btn btn-default" type="button" ng-click="deleteOption($index)" ><span class="glyphicon glyphicon-trash"></span></a>
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  
+  <div class="row" ng-hide="question.type == 'TEXT' || question.type == 'PARAGRAPH_TEXT'">
+    <div class="col-xs-12">
+      <button type="button" class="btn btn-default" ng-click="addOption()">
+        <span class="glyphicon glyphicon-plus"></span>
+        선택 항목 추가
+      </button>
+    </div>
+  </div>
+  <hr/>
+  
+  <div>
+    <a href="#/survey/{{surveyId}}" class="btn btn-primary">
+      <span class="glyphicon glyphicon-chevron-left"></span> Back 
+    </a>
+  </div>
+  <br/>
+  
+</form>

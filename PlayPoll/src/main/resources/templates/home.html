@@ -1,0 +1,72 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" ng-app="pollApp">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AnyPlayPoll</title>
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/css/ng-grid.min.css" />
+<style>
+  .table-vert-center td {
+     vertical-align: middle!important;
+  }
+  
+  .gridStyle {
+    border: 1px solid rgb(212,212,212);
+  }
+</style>
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+  <div class="navbar navbar-default" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">AnyPlayPoll </a>
+      </div>
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="#/survey">나의 설문</a></li>
+        </ul>
+        <a href="/logout" type="button" class="btn btn-default navbar-btn navbar-right">로그아웃</a>
+      </div>
+      <!--/.nav-collapse -->
+    </div>
+  </div>
+  <div class="container" ng-view=""></div>
+
+  <script src="js/vendor/jquery-2.1.0.min.js"></script>
+  <script src="js/vendor/bootstrap.min.js"></script>
+  <script src="js/vendor/spin.min.js"></script>
+  <script src="js/vendor/angular.min.js"></script>
+  <script src="js/vendor/angular-route.min.js"></script>
+  <script src="js/vendor/angular-resource.min.js"></script>
+  <script src="js/vendor/angular-touch.min.js"></script>
+  <script src="js/vendor/ui-bootstrap-tpls-0.10.0.min.js"></script>
+  <script src="js/vendor/ng-grid-2.0.11.min.js"></script>
+  <script src="js/vendor/ng-grid-csv-export.js"></script>
+  <script src="js/vendor/ng-grid-pdf-export.js"></script>
+  <script src="js/vendor/ng-grid-flexible-height.js"></script>
+  <script src="js/vendor/kakao.min.js"></script>
+
+  <script src="js/app.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/directives.js"></script>
+</body>
+</html>
