@@ -39,6 +39,7 @@
                 </div>
 				<form class="form" action="/join/user" method="POST" role="form" >
 					<div class="form-group">
+						<p th:if="${param.reqIsEmpty}" class="alert alert-danger">ID와 비밀번호를 입력해주세요.</p>
 						<label class="sr-only" for="input-email">emailaddress</label>
                         <input type="text" class="form-control" name="email" id="input-email" placeholder="이메일" />
 							

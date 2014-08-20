@@ -188,6 +188,10 @@ public class HomeController {
 	@RequestMapping(value="join/user", method = RequestMethod.POST)
 	public String joinUser(@RequestParam String email, @RequestParam String password , Map<String, Object> model) {
 		
+		if("".equals(email.trim()) || "".equals(password.trim())){
+			return "redirect:/join?reqIsEmpty";
+		}
+		
 		User user = new User();
 		user.setUsername(email);
 		Md5PasswordEncoder encoder = new Md5PasswordEncoder();
