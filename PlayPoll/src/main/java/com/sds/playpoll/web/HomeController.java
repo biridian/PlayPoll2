@@ -192,6 +192,12 @@ public class HomeController {
 			return "redirect:/join?reqIsEmpty";
 		}
 		
+		User userCheck = userService.loadUserByUsername(email);
+		
+		if(userCheck != null){
+			return "redirect:/join?idDuplicate";
+		}
+		
 		User user = new User();
 		user.setUsername(email);
 		Md5PasswordEncoder encoder = new Md5PasswordEncoder();
