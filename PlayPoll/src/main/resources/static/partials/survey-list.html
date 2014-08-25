@@ -9,9 +9,21 @@
         <form class="form-horizontal" role="form" ng-hide="loading">
 		  <div class="form-group">
 		    <label for="poll-title" class="col-sm-3 control-label">제목</label>
-		    <div class="col-sm-9">
+		    <div class="col-sm-12">
 		      <input type="text" class="form-control" id="poll-title" placeholder="제목을 입력하세요." ng-model="surveyTitle" ng-keyup="$event.keyCode == 13 && surveyTitle.length > 0 ? createSurvey() : ''">
 		    </div>
+		  </div>
+		</form>
+		<form class="form-horizontal" role="form" ng-hide="loading">
+		  <div class="form-group1">
+		    <label for="open-yn" class="col-sm-6 control-label">결과 공개 여부</label>
+		    <div class="col-sm-5">
+
+		       <input type="radio" class="form-control1" id="open-yn" ng-model="surveyresult" ng-value=true>yes 
+  			   <input type="radio" class="form-control1" id="open-yn" ng-model="surveyresult" value=false>no
+  	                                        
+		  
+		     </div>		  
 		  </div>
 		</form>
 		<div id="spinner" style="height:50px;" ng-show="loading"></div>

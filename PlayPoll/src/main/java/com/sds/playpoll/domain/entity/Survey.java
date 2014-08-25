@@ -38,6 +38,10 @@ public class Survey {
     @Column(nullable = false)
     private String status;
     
+    @Column(nullable = false)
+    private boolean result;
+
+    
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "survey")
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
     private List<Question> questions;
@@ -100,6 +104,15 @@ public class Survey {
 		this.status = status;
 	}
 
+	public boolean getResult() {
+		return result;
+	}
+
+	public void setResult(boolean result) {
+		this.result = result;
+	}
+
+
 	public User getCreatedBy() {
 		return createdBy;
 	}
@@ -134,7 +147,7 @@ public class Survey {
 
 	@Override
 	public String toString() {
-		return "Survey [surveyId=" + surveyId + ", title=" + title + ", description=" + description + ", status=" + status + ", questions=" + questions + ", createdBy=" + createdBy + ", createdDate=" + createdDate + ", lastModifiedDate=" + lastModifiedDate + "]";
+		return "Survey [surveyId=" + surveyId + "result =" + result +   ", title=" + title + ", description=" + description + ", status=" + status + ", questions=" + questions + ", createdBy=" + createdBy + ", createdDate=" + createdDate + ", lastModifiedDate=" + lastModifiedDate + "]";
 	}
 	
 }
