@@ -53,7 +53,7 @@
       <span class="glyphicon glyphicon-chevron-left"></span> 뒤로 
     </a>
     <!--<a href="#/survey/{{surveyId}}/preview" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-search"></span> 미리보기</a> -->
-    <button type="button" class="btn btn-warning pull-right" ng-click="openSendSurveyModal(survey.surveyId)"><span class="glyphicon glyphicon-send"></span> 요청</button>
+    <button ng-if="survey.status === '02'" type="button" class="btn btn-warning pull-right" ng-click="openSendSurveyModal(survey.surveyId)"><span class="glyphicon glyphicon-send"></span> 요청</button>
   </div>
   <br/>
 </form>
