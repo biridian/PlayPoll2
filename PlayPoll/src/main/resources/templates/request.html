@@ -24,7 +24,10 @@
       </div>
     </div>
   </div>
-  <div class="container">
+  <div th:if="${survey.status} == '03'">
+  	<p class="alert alert-danger">설문이 종료되었습니다.</p>
+  </div>
+  <div th:if="${survey.status} != '03'" class="container">
     <div class="row">
       <div class="col-md-12">
         <form th:action="@{${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + (#httpServletRequest.getServerPort() == 80 || #httpServletRequest.getServerPort() == 443 ? '' : ':' + #httpServletRequest.getServerPort()) + '/response/'} + ${survey.surveyId}}" action="" method="POST" id="ss-form" target="_self" onsubmit="">
