@@ -34,6 +34,9 @@ public class Answer implements Serializable {
 	 */
 	private String result;
 	
+	private String kakaoid;
+	
+	
     @CreatedDate
     @Column(updatable = false)
     private Date createdDate;
@@ -61,6 +64,14 @@ public class Answer implements Serializable {
 	public void setResult(String result) {
 		this.result = result;
 	}
+	
+	public String getKakaoid() {
+		return kakaoid;
+	}
+
+	public void setKakaoid(String kakaoid) {
+		this.kakaoid = kakaoid;
+	}
 
 	public Date getCreatedDate() {
 		return createdDate;
@@ -70,9 +81,13 @@ public class Answer implements Serializable {
 		this.createdDate = createdDate;
 	}
 
+
+	
 	@Override
 	public String toString() {
-		return "SurveyAnswer [answerId=" + answerId + ", survey=" + survey + ", result=" + result + ", createdDate=" + createdDate + "]";
+		return "SurveyAnswer [answerId=" + answerId + ", survey=" + survey + ", result=" + result + ", kakaoid=" + kakaoid + ", createdDate=" + createdDate + "]";
 	}
+
+	
 	
 }
