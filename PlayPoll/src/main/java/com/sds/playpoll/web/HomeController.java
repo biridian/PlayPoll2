@@ -108,13 +108,13 @@ public class HomeController {
 		model.put("survey", surveyService.getSurvey(surveyId));
 		
 		Map<String, Object> resultMap = new HashMap<>();
-		Map<String, Object> kakaoMap = new HashMap<>();
+		Map<String, Object> emailMap = new HashMap<>();
 		
 		
 		for (String key : param.keySet()) {
 			
-			if(key.equals("kakaoid_input")){
-				kakaoMap.put(key, StringUtils.collectionToCommaDelimitedString(param.get(key)));//"kakaoid_input":"sds1004"
+			if(key.equals("emailid_input")){
+				emailMap.put(key, StringUtils.collectionToCommaDelimitedString(param.get(key)));//"emailid_input":"sds1004"
 			}
 			
 			else{
@@ -126,11 +126,11 @@ public class HomeController {
 		ObjectMapper mapper = new ObjectMapper();
 		
 		String result = "";
-		String kakaoid="";
+		String emailid="";
 	
 		try {
 			result = mapper.writeValueAsString(resultMap); //writeValueAsString 때문에 "3":"3","4":"may"
-			kakaoid= mapper.writeValueAsString(kakaoMap);
+			emailid= mapper.writeValueAsString(emailMap);
 		} catch (JsonProcessingException e) {
 			LOG.error("json write error", e);
 		}
@@ -142,7 +142,7 @@ public class HomeController {
 		answer.setSurvey(survey);
 		answer.setResult(result);
 		
-		answer.setKakaoid(kakaoid);
+		answer.setemailid(emailid);
 		
 		surveyAnswerService.saveSurvey(answer);
 		

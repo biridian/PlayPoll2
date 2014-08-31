@@ -34,7 +34,7 @@ public class Answer implements Serializable {
 	 */
 	private String result;
 	
-	private String kakaoid;
+	private String emailid;
 	
 	
     @CreatedDate
@@ -65,12 +65,12 @@ public class Answer implements Serializable {
 		this.result = result;
 	}
 	
-	public String getKakaoid() {
-		return kakaoid;
+	public String getemailid() {
+		return emailid;
 	}
 
-	public void setKakaoid(String kakaoid) {
-		this.kakaoid = kakaoid;
+	public void setemailid(String emailid) {
+		this.emailid = emailid;
 	}
 
 	public Date getCreatedDate() {
@@ -85,7 +85,7 @@ public class Answer implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "SurveyAnswer [answerId=" + answerId + ", survey=" + survey + ", result=" + result + ", kakaoid=" + kakaoid + ", createdDate=" + createdDate + "]";
+		return "SurveyAnswer [answerId=" + answerId + ", survey=" + survey + ", result=" + result + ", emailid=" + emailid + ", createdDate=" + createdDate + "]";
 	}
 
 	

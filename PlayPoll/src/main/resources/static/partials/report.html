@@ -1,3 +1,5 @@
+
+
 <div class="row">
   <div class=col-md-12>
     <h1>설문 결과</h1>
@@ -12,8 +14,25 @@
     
     <br /> 
     <a href="#/survey" class="btn btn-primary"> <span class="glyphicon glyphicon-chevron-left"></span> 뒤로
+       
     </a>
-<!--     <button type="button" class="btn btn-default pull-right" ng-click="openSendSurveyModal(survey.surveyId)"><span class="glyphicon glyphicon-floppy-save"></span> Excel</button> -->
-  </div>
+    
+      <button type="button" class="btn btn-default" ng-click="sendByEmail()">결과 이메일로 전송</button><p>
+        <div ng-if="emails.isNotValid">
+			<span class="validError" ng-show="emails.isNotValid">잘못된 형식의 이메일 주소입니다 : </span><br>
+  			<span class="validErrorList" ng-repeat="email in emails" ng-show="email.isNotValid">{{email.message}}<br></span>
+  		</div>
+  		<div ng-if="emailResults.isSuccess">
+  			<span class="sendSuccess"  ng-show="emailResults.isSuccess">메일 발송에 성공하였습니다. </span>
+  			
+  		</div>
+  		<div ng-if="emailResults.isError">
+  			<span class="sendError" ng-show="emailResults.isError">메일 발송에 실패하였습니다 : </span><br>
+  			<span class="sendErrorList" ng-repeat="emailResult in emailResults" ng-show="emailResult.isError">{{emailResult.message}}<br></span>
+  		</div>
+  		
+  		
+      </div>
+ 
 </div>
 <br />

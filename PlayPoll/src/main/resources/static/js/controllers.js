@@ -338,12 +338,15 @@ surveyControllers.controller('PreviewController', ['$scope', '$routeParams', '$t
 ]);
 
 
-surveyControllers.controller('ReportController', [ '$scope', '$routeParams', '$filter', 'survey', 'questions', 'answers',
-  function($scope, $routeParams, $filter, survey, questions, answers) {
+surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$location', '$filter', '$http', 'survey', 'questions', 'answers',
+  function($scope, $routeParams, $location, $filter,$http, survey, questions, answers) {
     
     $scope.survey = survey;
     $scope.questionColumns = [];
     $scope.answerData = [];
+    var emailist = "";
+    
+
 
     // 컬럼 정의
     $scope.questionColumns.push({
@@ -369,18 +372,30 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams', '$f
     
     // 데이터 정의
     angular.forEach(answers, function(answer, key) {
-      console.log(key);
-      console.log(answer);
+
       
       var answerRow = {
           num: key + 1,
           createdDate: $filter('date')(answer.createdDate, 'yyyy-MM-dd HH:mm:ss')
       };
       
-      angular.forEach(answer.result, function(value, key) {
+
+      angular.forEach(answer.result, function(value, key) {  //{"2":"4"}
         var keyString = "q" + key;
         answerRow[keyString] = value;
+        //console.log(key); //이때 key는 question id 임  . answer.result의 {"2":"4"} 에서 2
+        //console.log(value); // answer.result의 {"2":"4"} 에서 4
       });
+      
+      angular.forEach(answer.emailid, function(value, key) {  //{"emailid_input":"elmo9999@naver.com"}
+    	
+    	//console.log(key); //emailid_input 
+    	//console.log(value); //elmo9999@naver.com
+    	emailist = emailist + value +  "\n" ;
+    	//console.log(emailist); // elmo9999@naver.com+\n+elmo0228@naver.com 
+        });
+
+      
       
       $scope.answerData.push(answerRow);
     }); 
@@ -395,5 +410,70 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams', '$f
       showGroupPanel: true,
       showFooter: true
     };
+    
+
+    
+    $scope.request = {
+    	      link : $location.protocol() + '://' + $location.host()
+    	          + ($location.port() != 80 ? ':' + $location.port() : '')
+    	          + '/request/' + $scope.survey.surveyId, //suervy 1111 surveyId 들어가야 함
+    	      email : ''
+    	    };
+    
+	
+    
+    
+    $scope.sendByEmail = function() {
+    	
+    	console.log("sendByEmail");
+        $scope.emails = [];
+        
+        $scope.emailResults = [];
+        
+    	var EMAIL_REGEXP = /^[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9-]+(\.[a-z0-9-]+)*$/i;
+    	    	
+    	
+    	var emailData = emailist.split('\n');
+    	
+    	
+    	angular.forEach(emailData, function(value, key){
+    		if(value != null && value != ''){
+    			if(EMAIL_REGEXP.test(value)){
+    				$scope.emails.push({
+    					message: value,
+    					isNotValid: false,
+    				});
+    			}
+    			else{
+    				$scope.emails.push({
+    					message: value,
+    					isNotValid: true,
+    				});
+    				$scope.emails.isNotValid = true;
+    			}
+    		}
+    	});
+    	
+    	if(!$scope.emails.isNotValid && $scope.emails != ''){
+    		angular.forEach($scope.emails, function(value, key){
+    			$http.post('/rest/survey/' + $scope.survey.surveyId + '/send', $.param({email: value.message}), { headers: { "Content-Type": "application/x-www-form-urlencoded" } }).success(function(response){
+    				console.log(response);
+    			}).error(function(err){
+    				console.log(err);
+    				$scope.emailResults.push({
+    					isError: true,
+    					message: value.message
+    				})
+    				$scope.emailResults.isError = true;
+    			});
+    		});
+    		if($scope.emailResults.isError != true){
+    	    	$scope.emailResults.isSuccess = true;
+    		}
+    		$scope.request.email = '';
+    	}
+    }
+    
+
   } 
 ]);

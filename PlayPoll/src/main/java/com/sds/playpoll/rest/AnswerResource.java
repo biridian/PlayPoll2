@@ -54,6 +54,12 @@ public class AnswerResource {
 
 			String resultString = answer.getResult();
 			answerMap.put("result", resultString != null ? MAPPER.readValue(resultString, new TypeReference<HashMap<String, Object>>() {}) : null);
+			
+			String emailidString = answer.getemailid();
+			answerMap.put("emailid", emailidString != null ? MAPPER.readValue(emailidString, new TypeReference<HashMap<String, Object>>() {}) : null);
+			
+			
+			
 			answers.add(answerMap);
 		}
 
