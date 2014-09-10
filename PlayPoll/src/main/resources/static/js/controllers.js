@@ -341,12 +341,17 @@ surveyControllers.controller('PreviewController', ['$scope', '$routeParams', '$t
 surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$location', '$filter', '$http', 'survey', 'questions', 'answers',
   function($scope, $routeParams, $location, $filter,$http, survey, questions, answers) {
     
+
+  	 
+  	 
     $scope.survey = survey;
     $scope.questionColumns = [];
     $scope.answerData = [];
     var emailist = "";
 
-    var optionarr = new Array();
+    var optionarrayay = new Array();
+    var anwercountarray = new Array();
+   
 
 
     // 컬럼 정의
@@ -369,9 +374,11 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
       var Arr = JSON.parse(question.options);
       while(Arr.length > 0){
     	  var option = Arr.pop().text;
-    	  optionarr.push(option);
+    	  optionarrayay.push(option);
+    	  anwercountarray.push(0);
       }
       
+ 
       
       $scope.questionColumns.push({
         field: "q" + question.questionId,
@@ -396,7 +403,20 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
         answerRow[keyString] = value;
         //console.log(key);  2
         //console.log(value); // 4
+        
+     for(var i = 0; i<optionarrayay.length ; i++)
+   	  if(optionarrayay[i]==value){
+  		  anwercountarray[i]++;
+    	  }
+     
+     
+     
+    
+        
       });
+      
+   
+      
       
       angular.forEach(answer.emailid, function(value, key) { 
 
@@ -408,6 +428,11 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
       
       $scope.answerData.push(answerRow);
     }); 
+    
+    for(var i = 0; i<anwercountarray.length ; i++)
+       	console.log(anwercountarray[i]);
+    
+    
   
     var csvOpts = { columnOverrides: { obj: function(o) { return o.a + '|' +  o.b; } } };
     var hgtOpts = { minHeight: 200 };
@@ -454,10 +479,10 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
     		      {
     		        "c": [
     		          {
-    		            "v": optionarr.pop()
+    		            "v": optionarrayay.pop()
     		          },
     		          {
-    		            "v": 19,
+    		            "v": anwercountarray.pop(),
     		            "f": "42 items"
     		          }
     		        ]
@@ -465,30 +490,30 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
     		      {
     		        "c": [
     		          {
-    		            "v": optionarr.pop()
+    		            "v": optionarrayay.pop()
     		          },
     		          {
-    		            "v": 22
+    		            "v": anwercountarray.pop()
     		          }
     		        ]
     		      },
     		      {
     		        "c": [
     		          {
-    		            "v": optionarr.pop()
+    		            "v": optionarrayay.pop()
     		          },
     		          {
-    		            "v": 24
+    		            "v": anwercountarray.pop()
     		          }
     		        ]
     		      },
     		      {
       		        "c": [
       		          {
-      		            "v": optionarr.pop()
+      		            "v": optionarrayay.pop()
       		          },
       		          {
-      		            "v": 35
+      		            "v": anwercountarray.pop()
       		          }
       		        ]
       		      }
@@ -564,7 +589,7 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
     }
     
     
-    
+
     
 
   } 
