@@ -347,10 +347,12 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
     $scope.survey = survey;
     $scope.questionColumns = [];
     $scope.answerData = [];
+
+    
     var emailist = "";
 
-    var optionarrayay = new Array();
-    var anwercountarray = new Array();
+    var optionarrayay = new Array(); // 보기 배열
+    var anwercountarray = new Array(); //보기 별 선택 count 
    
 
 
@@ -370,14 +372,23 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
     angular.forEach(questions, function(question, key) {
      
     	console.log(question);
-
+    	
+    	$scope.graghisrequired = true; //질문 타입에 따라 파이 그래프  출력 여부 결정
+    	
+    	if((question.type == "TEXT") || (question.type == "PARAGRAPH_TEXT"))
+    	$scope.graghisrequired = false;
+    		
+        console.log("grpah?" + $scope.graghisrequired);
+    	
+    	
+     if($scope.graghisrequired)	{	
       var Arr = JSON.parse(question.options);
       while(Arr.length > 0){
     	  var option = Arr.pop().text;
     	  optionarrayay.push(option);
     	  anwercountarray.push(0);
       }
-      
+     }
  
       
       $scope.questionColumns.push({
@@ -397,22 +408,23 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
           createdDate: $filter('date')(answer.createdDate, 'yyyy-MM-dd HH:mm:ss')
       };
       
+      var anwervalue = new Array();
 
-      angular.forEach(answer.result, function(value, key) {  //{"2":"4"}
+      angular.forEach(answer.result, function(value, key) {  
         var keyString = "q" + key;
         answerRow[keyString] = value;
-        //console.log(key);  2
-        //console.log(value); // 4
+
         
-     for(var i = 0; i<optionarrayay.length ; i++)
-   	  if(optionarrayay[i]==value){
-  		  anwercountarray[i]++;
+     if($scope.graghisrequired)	{	   
+     for(var i = 0; i<optionarrayay.length ; i++){
+   	     if(value.indexOf(optionarrayay[i]) > -1){  // 다중 선택 타입인 경우 value가 burgerking,macdornald 이렇게 string으로 들어감. 따라서 문자열 포함 여부로 count 
+   	      console.log(value.indexOf(optionarrayay[i]));
+   	      anwercountarray[i]++;
+  		  console.log(value + " contains " + optionarrayay[i]);
     	  }
+   	     }
+        }
      
-     
-     
-    
-        
       });
       
    
@@ -429,10 +441,8 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
       $scope.answerData.push(answerRow);
     }); 
     
-    for(var i = 0; i<anwercountarray.length ; i++)
-       	console.log(anwercountarray[i]);
-    
-    
+
+        
   
     var csvOpts = { columnOverrides: { obj: function(o) { return o.a + '|' +  o.b; } } };
     var hgtOpts = { minHeight: 200 };
@@ -482,8 +492,7 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
     		            "v": optionarrayay.pop()
     		          },
     		          {
-    		            "v": anwercountarray.pop(),
-    		            "f": "42 items"
+    		            "v": anwercountarray.pop()
     		          }
     		        ]
     		      },
