@@ -345,7 +345,8 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
     $scope.questionColumns = [];
     $scope.answerData = [];
     var emailist = "";
-    
+
+    var optionarr = new Array();
 
 
     // 컬럼 정의
@@ -362,12 +363,22 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
     });
     
     angular.forEach(questions, function(question, key) {
-      console.log(question);
+     
+    	console.log(question);
+
+      var Arr = JSON.parse(question.options);
+      while(Arr.length > 0){
+    	  var option = Arr.pop().text;
+    	  optionarr.push(option);
+      }
+      
       
       $scope.questionColumns.push({
         field: "q" + question.questionId,
         displayName: question.title
       });
+      
+      
     });
     
     // 데이터 정의
@@ -383,16 +394,14 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
       angular.forEach(answer.result, function(value, key) {  //{"2":"4"}
         var keyString = "q" + key;
         answerRow[keyString] = value;
-        //console.log(key); //이때 key는 question id 임  . answer.result의 {"2":"4"} 에서 2
-        //console.log(value); // answer.result의 {"2":"4"} 에서 4
+        //console.log(key);  2
+        //console.log(value); // 4
       });
       
-      angular.forEach(answer.emailid, function(value, key) {  //{"emailid_input":"elmo9999@naver.com"}
-    	
-    	//console.log(key); //emailid_input 
-    	//console.log(value); //elmo9999@naver.com
+      angular.forEach(answer.emailid, function(value, key) { 
+
     	emailist = emailist + value +  "\n" ;
-    	//console.log(emailist); // elmo9999@naver.com+\n+elmo0228@naver.com 
+    	console.log(emailist); 
         });
 
       
@@ -420,7 +429,87 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
     	      email : ''
     	    };
     
+    
+
 	
+    $scope.chart = {
+    		  "type": "PieChart",
+    		  "displayed": true,
+    		  "cssStyle": "height:600px; width:100%;",
+    		  "data": {
+    		    "cols": [
+    		      {
+    		        "id": "choice",
+    		        "label": "choice",
+    		        "type": "string"
+    		    
+    		      },
+    		      {
+    		        "id": "count",
+    		        "label": "count",
+    		        "type": "number"
+    		      },
+    		    ],
+    		    "rows": [
+    		      {
+    		        "c": [
+    		          {
+    		            "v": optionarr.pop()
+    		          },
+    		          {
+    		            "v": 19,
+    		            "f": "42 items"
+    		          }
+    		        ]
+    		      },
+    		      {
+    		        "c": [
+    		          {
+    		            "v": optionarr.pop()
+    		          },
+    		          {
+    		            "v": 22
+    		          }
+    		        ]
+    		      },
+    		      {
+    		        "c": [
+    		          {
+    		            "v": optionarr.pop()
+    		          },
+    		          {
+    		            "v": 24
+    		          }
+    		        ]
+    		      },
+    		      {
+      		        "c": [
+      		          {
+      		            "v": optionarr.pop()
+      		          },
+      		          {
+      		            "v": 35
+      		          }
+      		        ]
+      		      }
+    		    ]
+    		  },
+    		  "options": {
+    		    "title": $scope.survey.title,
+    		    "isStacked": "true",
+    		    "fill": 20,
+    		    "displayExactValues": true,
+    		    "vAxis": {
+    		      "title": "Sales unit",
+    		      "gridlines": {
+    		        "count": 10
+    		      }
+    		    },
+    		    "hAxis": {
+    		      "title": "Date"
+    		    }
+    		  }
+    		};
     
     
     $scope.sendByEmail = function() {
@@ -473,6 +562,9 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
     		$scope.request.email = '';
     	}
     }
+    
+    
+    
     
 
   } 

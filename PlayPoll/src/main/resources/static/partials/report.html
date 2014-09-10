@@ -1,5 +1,5 @@
 
-
+ 
 <div class="row">
   <div class=col-md-12>
     <h1>설문 결과</h1>
@@ -12,11 +12,12 @@
       </div>
     </div>
     
+    <div google-chart chart="chart" style="{{chart.cssStyle}}"/>
+    
     <br /> 
     <a href="#/survey" class="btn btn-primary"> <span class="glyphicon glyphicon-chevron-left"></span> 뒤로
        
     </a>
-    
       <button type="button" class="btn btn-default" ng-click="sendByEmail()">결과 이메일로 전송</button><p>
         <div ng-if="emails.isNotValid">
 			<span class="validError" ng-show="emails.isNotValid">잘못된 형식의 이메일 주소입니다 : </span><br>
@@ -33,6 +34,9 @@
   		
   		
       </div>
+      
+   
  
 </div>
-<br />
+
+    

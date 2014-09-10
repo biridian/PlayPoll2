@@ -10,7 +10,8 @@ angular.module('pollApp', [
   'pollServices',
   'myApp.directives',
   'surveyControllers',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'googlechart'
 ]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/survey', {templateUrl: 'partials/survey-list.html', controller: 'SurveyController'});
