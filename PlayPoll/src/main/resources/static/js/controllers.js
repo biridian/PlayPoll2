@@ -353,6 +353,21 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
 	var questionTitle;
     
     var emailist = "";
+    
+    
+    var uAgent = navigator.userAgent.toLowerCase();
+
+    var mobilePhones = new Array('iphone','ipad', 'firefox', 'android', 
+    	'chrome');
+
+    for(var i=0;i<mobilePhones.length;i++){
+    	if(uAgent.indexOf(mobilePhones[i]) != -1){
+    		console.log(mobilePhones[i]);
+    		$scope.mobile=true;
+    	}
+    }
+    
+    
 
     // 컬럼 정의
     $scope.questionColumns.push({
