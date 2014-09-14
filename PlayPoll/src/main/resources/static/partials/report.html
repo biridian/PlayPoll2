@@ -6,14 +6,31 @@
     <hr />
     <h2>{{survey.title}}</h2>
     <br />
+    
+	<div class="row" ng-if="graghisrequired">
+		<div class="col-md-5">
+			<div class="form-group">
+				<label for="chartType">Chart type</label> 
+				<select class="form-control" id="chartType" ng-model="chart.type"">
+					<option value="AreaChart">AreaChart</option>
+					<option value="PieChart">PieChart</option>
+					<option value="ColumnChart">ColumnChart</option>
+					<option value="LineChart">LineChart</option>
+					<option value="BarChart">BarChart</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="col-md-7">
+			<div google-chart chart="chart" style="{{chart.cssStyle}}"></div>
+		</div>
+	</div>
+    
     <div class="row">
       <div class="col-md-12">
         <div class="gridStyle" ng-grid="gridOptions"></div>
       </div>
     </div>
-    
-    
-    <div ng-if="graghisrequired" google-chart chart="chart" style="{{chart.cssStyle}}"/>
     
     <br /> 
     <a href="#/survey" class="btn btn-primary"> <span class="glyphicon glyphicon-chevron-left"></span> 뒤로

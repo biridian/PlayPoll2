@@ -340,21 +340,19 @@ surveyControllers.controller('PreviewController', ['$scope', '$routeParams', '$t
 
 surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$location', '$filter', '$http', 'survey', 'questions', 'answers',
   function($scope, $routeParams, $location, $filter,$http, survey, questions, answers) {
-    
-
-  	 
   	 
     $scope.survey = survey;
     $scope.questionColumns = [];
     $scope.answerData = [];
 
+    $scope.chartQuestions = [];
+	$scope.chartAnswers = [];
+	$scope.tempArray = [];
+	var tempAnswerCount = [];
+	var tempAnswers = [];
+	var questionTitle;
     
     var emailist = "";
-
-    var optionarrayay = new Array(); // 보기 배열
-    var anwercountarray = new Array(); //보기 별 선택 count 
-   
-
 
     // 컬럼 정의
     $scope.questionColumns.push({
@@ -369,62 +367,44 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
       width: 160
     });
     
-    angular.forEach(questions, function(question, key) {
-     
-    	console.log(question);
+	angular.forEach(questions, function(question, key) {
+		$scope.graghisrequired = true; //질문 타입에 따라 파이 그래프  출력 여부 결정
     	
-    	$scope.graghisrequired = true; //질문 타입에 따라 파이 그래프  출력 여부 결정
-    	
-    	if((question.type == "TEXT") || (question.type == "PARAGRAPH_TEXT"))
-    	$scope.graghisrequired = false;
-    		
-        console.log("grpah?" + $scope.graghisrequired);
-    	
-    	
-     if($scope.graghisrequired)	{	
-      var Arr = JSON.parse(question.options);
-      while(Arr.length > 0){
-    	  var option = Arr.pop().text;
-    	  optionarrayay.push(option);
-    	  anwercountarray.push(0);
-      }
-     }
- 
+		if((question.type == "TEXT") || (question.type == "PARAGRAPH_TEXT"))
+			$scope.graghisrequired = false;
       
-      $scope.questionColumns.push({
-        field: "q" + question.questionId,
-        displayName: question.title
-      });
-      
-      
-    });
+		$scope.questionColumns.push({
+			field: "q" + question.questionId,
+			displayName: question.title
+		});
+		questionTitle = question.title;
+		if (question.options != null) {
+			question.options = JSON.parse(question.options);
+			$scope.tempArray = question.options
+		}
+	});
     
+	for(var i=0;i<$scope.tempArray.length;i++){
+		tempAnswerCount.push(0);
+	}
+	
     // 데이터 정의
     angular.forEach(answers, function(answer, key) {
-
       
       var answerRow = {
           num: key + 1,
           createdDate: $filter('date')(answer.createdDate, 'yyyy-MM-dd HH:mm:ss')
       };
-      
-      var anwervalue = new Array();
 
       angular.forEach(answer.result, function(value, key) {  
         var keyString = "q" + key;
         answerRow[keyString] = value;
-
         
-     if($scope.graghisrequired)	{	   
-     for(var i = 0; i<optionarrayay.length ; i++){
-   	     if(value.indexOf(optionarrayay[i]) > -1){  // 다중 선택 타입인 경우 value가 burgerking,macdornald 이렇게 string으로 들어감. 따라서 문자열 포함 여부로 count 
-   	      console.log(value.indexOf(optionarrayay[i]));
-   	      anwercountarray[i]++;
-  		  console.log(value + " contains " + optionarrayay[i]);
-    	  }
-   	     }
-        }
-     
+        for(var i=0;i<tempAnswerCount.length;i++){
+			if($scope.tempArray[i].text==value){
+				tempAnswerCount[i]++;
+			}
+		}
       });
       
    
@@ -440,9 +420,20 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
       
       $scope.answerData.push(answerRow);
     }); 
-    
 
-        
+    for(var i=0;i<tempAnswerCount.length;i++){
+		tempAnswers.push({
+			v: $scope.tempArray[i].text
+		});
+		tempAnswers.push({
+			v: tempAnswerCount[i]
+		});
+		
+		$scope.chartAnswers.push({
+			c: tempAnswers
+		});
+		tempAnswers = [];
+	}
   
     var csvOpts = { columnOverrides: { obj: function(o) { return o.a + '|' +  o.b; } } };
     var hgtOpts = { minHeight: 200 };
@@ -454,8 +445,45 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
       showGroupPanel: true,
       showFooter: true
     };
-    
 
+    var chart1 = {};
+	chart1.type = "AreaChart";
+	chart1.cssStyle = "height:300px; width:500px;";
+    
+    $scope.chartQuestions = [
+                             {id: questionTitle, label: questionTitle, type: "string"},
+                             {id: questionTitle, label: questionTitle, type: "number"}
+                         ];
+    
+    chart1.data = {"cols": $scope.chartQuestions, "rows": $scope.chartAnswers};
+
+    var gridlineCount=0;
+    for(var i=0;i<tempAnswerCount.length;i++){
+    	if(gridlineCount<tempAnswerCount[i]){
+    		gridlineCount=tempAnswerCount[i];
+    	}
+    }
+    
+    var gridlines = {"count": gridlineCount+1};
+    
+    chart1.options = {
+        "title": $scope.survey.title,
+        "isStacked": "true",
+        "fill": 20,
+        "displayExactValues": true,
+        "vAxis": {
+            "title": "Count", "gridlines": gridlines
+        },
+        "hAxis": {
+            "title": $scope.chartQuestions[0].title
+        }
+    };
+
+    chart1.formatters = {};
+
+    $scope.chart = chart1;
+    
+    
     
     $scope.request = {
     	      link : $location.protocol() + '://' + $location.host()
@@ -463,87 +491,6 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
     	          + '/request/' + $scope.survey.surveyId, //suervy 1111 surveyId 들어가야 함
     	      email : ''
     	    };
-    
-    
-
-	
-    $scope.chart = {
-    		  "type": "PieChart",
-    		  "displayed": true,
-    		  "cssStyle": "height:600px; width:100%;",
-    		  "data": {
-    		    "cols": [
-    		      {
-    		        "id": "choice",
-    		        "label": "choice",
-    		        "type": "string"
-    		    
-    		      },
-    		      {
-    		        "id": "count",
-    		        "label": "count",
-    		        "type": "number"
-    		      },
-    		    ],
-    		    "rows": [
-    		      {
-    		        "c": [
-    		          {
-    		            "v": optionarrayay.pop()
-    		          },
-    		          {
-    		            "v": anwercountarray.pop()
-    		          }
-    		        ]
-    		      },
-    		      {
-    		        "c": [
-    		          {
-    		            "v": optionarrayay.pop()
-    		          },
-    		          {
-    		            "v": anwercountarray.pop()
-    		          }
-    		        ]
-    		      },
-    		      {
-    		        "c": [
-    		          {
-    		            "v": optionarrayay.pop()
-    		          },
-    		          {
-    		            "v": anwercountarray.pop()
-    		          }
-    		        ]
-    		      },
-    		      {
-      		        "c": [
-      		          {
-      		            "v": optionarrayay.pop()
-      		          },
-      		          {
-      		            "v": anwercountarray.pop()
-      		          }
-      		        ]
-      		      }
-    		    ]
-    		  },
-    		  "options": {
-    		    "title": $scope.survey.title,
-    		    "isStacked": "true",
-    		    "fill": 20,
-    		    "displayExactValues": true,
-    		    "vAxis": {
-    		      "title": "Sales unit",
-    		      "gridlines": {
-    		        "count": 10
-    		      }
-    		    },
-    		    "hAxis": {
-    		      "title": "Date"
-    		    }
-    		  }
-    		};
     
     
     $scope.sendByEmail = function() {
