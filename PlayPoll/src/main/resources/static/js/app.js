@@ -49,8 +49,8 @@ config(['$routeProvider', function($routeProvider) {
         label: 'PlayPoll에서 설문 요청이 도착했습니다. 답변 부탁드립니다!',
         image: {
           src: 'http://dn.api1.kage.kakao.co.kr/14/dn/btqaWmFftyx/tBbQPH764Maw2R6IBhXd6K/o.jpg',
-          width: '300',
-          height: '200'
+          width: '100',
+          height: '60'
         },
         webButton: {
           text: '설문 답변하기',
