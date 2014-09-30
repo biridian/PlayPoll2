@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf()
 				.disable()
 			.authorizeRequests()
-				.antMatchers("/login", "/logout", "/user", "/request/**", "/response/**").permitAll()
+				.antMatchers("/login", "/logout", "/user", "/request/**").permitAll()
 				.anyRequest()
 				.authenticated()
 				.and()
@@ -41,7 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/fonts/**", "/samples/**", "/join/**", "/user**", "/partials/**");
+		web.ignoring().antMatchers("/fonts/**", "/samples/**", "/join/**", "/user**", "/partials/**", "/response/**");
 	}
 
 }
