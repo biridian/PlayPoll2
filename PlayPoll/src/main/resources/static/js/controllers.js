@@ -166,8 +166,42 @@ surveyControllers.controller('SurveyRequestController', ['$scope', '$routeParams
   			}
   		});
   	});
-	}
-]);
+	
+
+  	$scope.setCookie= function (cname,cvalue,exdays) {
+  	    var d = new Date();
+  	    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  	    var expires = "expires=" + d.toGMTString();
+  	    document.cookie = cname+"="+cvalue+"; "+expires; //playpoll=surveyId;30
+  	}
+
+  	$scope.getCookie = function(cname) {
+  	    var name = cname + "=";//playpoll=
+  	    var ca = document.cookie.split(';');
+  	    for(var i=0; i<ca.length; i++) {
+  	        var c = ca[i];
+  	        while (c.charAt(0)==' ') c = c.substring(1);
+  	        if (c.indexOf(name) != -1) {
+  	            return c.substring(name.length, c.length);
+  	        }
+  	    }
+  	    return "";
+  	}
+
+  	$scope.checkCookie = function() {
+  	    var cookie=getCookie("playpoll");
+  	    if (cookie == $scope.surveyId) {
+  	        alert("설문 이미 제출 하셨습니다" + cookie);
+  	    } else {
+  	           setCookie("playpoll", $scope.surveyId, 30);
+  	    }
+  	}
+
+
+}
+]
+
+);
 
 
 surveyControllers.controller('SurveyDetailController', ['$scope', '$routeParams', '$timeout', '$modal', 'Survey', 'Question',
