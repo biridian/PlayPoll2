@@ -55,6 +55,7 @@ surveyControllers.controller('SurveyController', ['$scope', '$rootScope', '$loca
 
     $scope.changeSurveyStatus = function(survey, status) {
       survey.status = status;
+
       Survey.save(survey, function(data) {
         console.log(data);
       });
@@ -143,6 +144,25 @@ surveyControllers.controller('SendSurveyModalController', ['$scope', '$routePara
     		$scope.request.email = '';
     	}
     }
+    
+    
+    $scope.sendBykakao = function() {
+    	console.log("here");
+    Kakao.Link.createTalkLinkButton({
+        container: '#kakao-link-btn',
+        label: '카카오링크 샘플에 오신 것을 환영합니다.',
+        image: {
+          src: 'http://dn.api1.kage.kakao.co.kr/14/dn/btqaWmFftyx/tBbQPH764Maw2R6IBhXd6K/o.jpg',
+          width: '300',
+          height: '200'
+        },
+        webButton: {
+          text: '카카오 디벨로퍼스',
+          url: 'http://54.68.13.217:8080' // 앱 설정의 웹 플랫폼에 등록한 도메인의 URL이어야 합니다.
+        }
+      });
+    }
+    
 	}
 ]);
 
@@ -168,34 +188,6 @@ surveyControllers.controller('SurveyRequestController', ['$scope', '$routeParams
   	});
 	
 
-  	$scope.setCookie= function (cname,cvalue,exdays) {
-  	    var d = new Date();
-  	    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-  	    var expires = "expires=" + d.toGMTString();
-  	    document.cookie = cname+"="+cvalue+"; "+expires; //playpoll=surveyId;30
-  	}
-
-  	$scope.getCookie = function(cname) {
-  	    var name = cname + "=";//playpoll=
-  	    var ca = document.cookie.split(';');
-  	    for(var i=0; i<ca.length; i++) {
-  	        var c = ca[i];
-  	        while (c.charAt(0)==' ') c = c.substring(1);
-  	        if (c.indexOf(name) != -1) {
-  	            return c.substring(name.length, c.length);
-  	        }
-  	    }
-  	    return "";
-  	}
-
-  	$scope.checkCookie = function() {
-  	    var cookie=getCookie("playpoll");
-  	    if (cookie == $scope.surveyId) {
-  	        alert("설문 이미 제출 하셨습니다" + cookie);
-  	    } else {
-  	           setCookie("playpoll", $scope.surveyId, 30);
-  	    }
-  	}
 
 
 }

@@ -7,7 +7,8 @@
     <div class="form-group">
       <label for="question-title" class="col-sm-2 control-label">공유 링크</label>
       <div class="col-sm-10">
-        <input type="text" id="link" class="form-control"  ng-model="request.link" onfocus="this.select();" onmouseup="return false;">
+      <div id="link">{{request.link}}</div>
+        <input type="text" class="form-control" value={{request.link}} ng-model="request.link" onfocus="this.select();" onmouseup="return false;">
         <span class="help-block">* 링크를 복사 후 공유하여 설문을 요청할 수 있습니다.</span>
       </div>
     </div>
@@ -44,9 +45,14 @@
   
       <label for="question-type2" class="col-sm-2 control-label">카카오톡</label>
       
+      <!--  
   <a id="kakao-link-btn" href="javascript:;">
       <img src="http://dn.api1.kage.kakao.co.kr/14/dn/btqa9B90G1b/GESkkYjKCwJdYOkLvIBKZ0/o.jpg" />
     </a>
+    -->
+       <button type="button" id="kakao-link-btn" class="btn btn-default" ng-click="sendBykakao()">카카오톡</button><p>
+       
+       
     </div>
   
 <!-- 
@@ -69,14 +75,13 @@
   <button type="button" class="btn btn-primary" ng-click="cancel()">닫기</button>
 </div>
 
-
+<!--  
   <script>
     // 사용할 앱의 Javascript 키를 설정해 주세요.
    // Kakao.init('257cefb61c7f912a4e696470b82afccf');
-    console.log("request.link here");
-    var link = $('#link');
-
-    console.log(link.val());
+   
+var x=document.getElementById("link").innerHTML;
+console.log(x);
     // 카카오톡 링크 버튼을 생성합니다. 처음 한번만 호출하면 됩니다.
     Kakao.Link.createTalkLinkButton({
       container: '#kakao-link-btn',
@@ -88,10 +93,11 @@
       },
       webButton: {
         text: '설문 참여하기',
-        url: link
+        url: 'http://54.68.13.217:8080/request/2c9f985c48ddc6260148ddccec910000' 
         //url: 'http://54.68.13.217:8080/request/2c9f985c48ddc6260148ddccec910000' 
         // 앱 설정의 웹 플랫폼에 등록한 도메인의  URL http://54.68.13.217:8080이어야 합니다.
       }
     });
     </script>
+    -->
     
