@@ -397,8 +397,8 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
       width: 160
     });
     
+    $scope.graghisrequired = false; //질문 타입에 따라 그래프  출력 여부 결정
 	angular.forEach(questions, function(question, key) {
-		$scope.graghisrequired = false; //질문 타입에 따라 그래프  출력 여부 결정
     	
 		$scope.questionColumns.push({
 			field: "q" + question.questionId,
