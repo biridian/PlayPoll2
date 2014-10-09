@@ -152,9 +152,10 @@ surveyControllers.controller('SendSurveyModalController', ['$scope', '$routePara
         container: '#kakao-link-btn',
         label: 'Any play poll! 설문에 참여해주세요',
         image: {
-          src: 'http://dn.api1.kage.kakao.co.kr/14/dn/btqaWmFftyx/tBbQPH764Maw2R6IBhXd6K/o.jpg',
-          width: '300',
-          height: '200'
+         // src: 'http://dn.api1.kage.kakao.co.kr/14/dn/btqaWmFftyx/tBbQPH764Maw2R6IBhXd6K/o.jpg',
+            src: '/images/survey_3.png' ,
+            width: '300',
+            height: '200'
         },
         webButton: {
          text: '설문 참여하기',
@@ -524,7 +525,7 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
     $scope.resultlink = {
     	     link : $location.protocol() + '://' + $location.host()
     	          + ($location.port() != 80 ? ':' + $location.port() : '')
-    	          + '/result/' + $scope.survey.surveyId
+    	          + '/survey/' + $scope.survey.surveyId + '/report'
     	    };
     
     
@@ -598,7 +599,7 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
             container: '#kakao-link-btn',
             label: 'Any play poll! 참여하신 설문의 결과 입니다',
             image: {
-              src: 'http://dn.api1.kage.kakao.co.kr/14/dn/btqaWmFftyx/tBbQPH764Maw2R6IBhXd6K/o.jpg',
+              src:  '/images/poll_result.jpg' ,
               width: '300',
               height: '200'
             },
