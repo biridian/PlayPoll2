@@ -45,8 +45,8 @@ config(['$routeProvider', function($routeProvider) {
       console.log(attrs.kakaoLink);
       
       Kakao.Link.createTalkLinkButton({
-       // container: element[0],
-    	 container: '#kakao-link-btn',
+       container: element[0],
+    	// container: '#kakao-link-btn',
     	  label: 'PlayPoll에서 설문 요청이 도착했습니다. 답변 부탁드립니다!',
         image: {
           src: 'http://dn.api1.kage.kakao.co.kr/14/dn/btqaWmFftyx/tBbQPH764Maw2R6IBhXd6K/o.jpg',
