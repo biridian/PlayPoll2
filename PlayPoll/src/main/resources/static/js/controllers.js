@@ -147,18 +147,18 @@ surveyControllers.controller('SendSurveyModalController', ['$scope', '$routePara
     
     
     $scope.sendBykakao = function() {
-    	console.log("here");
+    	
     Kakao.Link.createTalkLinkButton({
         container: '#kakao-link-btn',
-        label: '카카오링크 샘플에 오신 것을 환영합니다.',
+        label: 'Any play poll! 설문에 참여해주세요',
         image: {
           src: 'http://dn.api1.kage.kakao.co.kr/14/dn/btqaWmFftyx/tBbQPH764Maw2R6IBhXd6K/o.jpg',
           width: '300',
           height: '200'
         },
         webButton: {
-          text: '카카오 디벨로퍼스',
-          url: 'http://54.68.13.217:8080' // 앱 설정의 웹 플랫폼에 등록한 도메인의 URL이어야 합니다.
+         text: '설문 참여하기',
+          url: $scope.request.link // 앱 설정의 웹 플랫폼에 등록한 도메인의 URL이어야 합니다.
         }
       });
     }
