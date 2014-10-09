@@ -46,4 +46,26 @@
     </div>
   </footer>  
 </body>
+
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+
+ var surveyid=/*[[${survey.surveyId}]]*/;
+ setCookie("playpoll_cookie", surveyid, 30);
+ //console.log("cookie generated:" +surveyid );
+
+ function setCookie(cName, cValue, cDay){
+		var expire = new Date();
+		expire.setDate(expire.getDate() + cDay);
+		cookies = cName + '=' + escape(cValue) + '; path=/ '; // 한글 깨짐을 막기위해 escape(cValue)를 합니다.
+		if(typeof cDay != 'undefined') cookies += ';expires=' + expire.toGMTString() + ';';
+		document.cookie = cookies;
+	}
+
+    
+/*]]>*/
+</script>
+
+
 </html>

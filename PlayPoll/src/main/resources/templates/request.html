@@ -15,7 +15,10 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
+  
 </head>
+
+
 <body>
   <div class="navbar navbar-inverse" role="navigation">
     <div class="container">
@@ -24,11 +27,15 @@
       </div>
     </div>
   </div>
+  
+   <div id="dupcheck"></div>
+  
   <div th:if="${survey.status} == '03'">
   	<p class="alert alert-danger">설문이 종료되었습니다.</p>
   </div>
+  
   <div th:if="${survey.status} != '03'" class="container">
-    <div class="row">
+    <div class="row" id="survey">
       <div class="col-md-12">
         <form th:action="@{${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + (#httpServletRequest.getServerPort() == 80 || #httpServletRequest.getServerPort() == 443 ? '' : ':' + #httpServletRequest.getServerPort()) + '/response/'} + ${survey.surveyId}}" action="" method="POST" id="ss-form" target="_self" onsubmit="">
           <div class="panel panel-default">
@@ -92,4 +99,49 @@
     </div>
   </footer>
 </body>
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+checkCookie();
+//console.log(getCookie("playpoll_cookie"));
+
+function getCookie(cName) {
+	cName = cName + '=';
+	var cookieData = document.cookie;
+	var start = cookieData.indexOf(cName);
+	var cValue = '';
+	if(start != -1){
+		start += cName.length;
+		var end = cookieData.indexOf(';', start);
+		if(end == -1)end = cookieData.length;
+		cValue = cookieData.substring(start, end);
+	}
+	return unescape(cValue);
+}
+
+
+
+
+function checkCookie() {
+    var cookie=getCookie("playpoll_cookie");
+    var surveyid=/*[[${survey.surveyId}]]*/;
+    
+    if (cookie == surveyid) {
+        document.getElementById("dupcheck").innerHTML='<p class="alert alert-danger">설문에 이미 참여하었습니다.</p>';
+        document.getElementById("survey").style.display="none";
+        }
+    
+   
+}
+
+    
+/*]]>*/
+</script>
+
+
+
+
+
+
+
 </html>
