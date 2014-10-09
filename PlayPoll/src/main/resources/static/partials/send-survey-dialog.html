@@ -7,8 +7,8 @@
     <div class="form-group">
       <label for="question-title" class="col-sm-2 control-label">공유 링크</label>
       <div class="col-sm-10">
-      <div id="link">{{request.link}}</div>
-        <input type="text" class="form-control" value={{request.link}} ng-model="request.link" onfocus="this.select();" onmouseup="return false;">
+   
+        <input type="text" class="form-control"  ng-model="request.link" onfocus="this.select();" onmouseup="return false;">
         <span class="help-block">* 링크를 복사 후 공유하여 설문을 요청할 수 있습니다.</span>
       </div>
     </div>
@@ -35,7 +35,7 @@
        <hr />
     
   <hr ng-if="checkMobile()" /> 
-    <div class="form-group ng-if="checkMobile()">
+    <div class="form-group" ng-if="checkMobile()">
     <label for="question-type2" class="col-sm-2 control-label">카카오톡</label>
     <button type="button" id="kakao-link-btn" class="btn btn-default" ng-click="sendBykakao()">
     <img src="/images/kakaolink_btn_medium.png"/> 
