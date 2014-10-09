@@ -54,7 +54,8 @@ config(['$routeProvider', function($routeProvider) {
         },
         webButton: {
           text: '설문 답변하기',
-          url: scope.webUrl
+          url: 'http://54.68.13.217:8080/request/2c9f985c48ddc6260148ddccec910000' 
+          // url: scope.webUrl
         }
       });
       
