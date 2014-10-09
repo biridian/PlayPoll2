@@ -371,17 +371,19 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
     $scope.questionColumns = [];
     $scope.answerData = [];
     $scope.resultyn = survey.result;
-    $scope.chartQuestions = [];
-	$scope.chartAnswers = [];
-	$scope.tempArray = [];
+    var chartQuestions = [];
+	var chartAnswers = [];
+	var tempArray = [];
 	var tempAnswerCount = [];
 	var tempAnswers = [];
+	var tempSplitData = [];
 	var questionTitle;
     
+	$scope.selectQuestionOptions = [];
+	$scope.selectedQuestion;
+	
     var emailist = "";
     
-    console.log("resultyn: " +  $scope.resultyn);
-
     // 컬럼 정의
     $scope.questionColumns.push({
       field: 'num',
@@ -396,23 +398,22 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
     });
     
 	angular.forEach(questions, function(question, key) {
-		$scope.graghisrequired = true; //질문 타입에 따라 파이 그래프  출력 여부 결정
+		$scope.graghisrequired = false; //질문 타입에 따라 그래프  출력 여부 결정
     	
-		if((question.type == "TEXT") || (question.type == "PARAGRAPH_TEXT"))
-			$scope.graghisrequired = false;
-      
 		$scope.questionColumns.push({
 			field: "q" + question.questionId,
 			displayName: question.title
 		});
 		questionTitle = question.title;
 		if (question.options != null) {
+			$scope.graghisrequired = true;
 			question.options = JSON.parse(question.options);
-			$scope.tempArray = question.options
+			$scope.selectQuestionOptions.push({name:question.title});
+			tempArray = question.options;
 		}
 	});
     
-	for(var i=0;i<$scope.tempArray.length;i++){
+	for(var i=0;i<tempArray.length;i++){
 		tempAnswerCount.push(0);
 	}
 	
@@ -429,8 +430,11 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
         answerRow[keyString] = value;
         
         for(var i=0;i<tempAnswerCount.length;i++){
-			if($scope.tempArray[i].text==value){
-				tempAnswerCount[i]++;
+        	tempSplitData = value.split(',');
+			for(var j=0;j<tempSplitData.length;j++){
+				if(tempArray[i].text==tempSplitData[j]){
+					tempAnswerCount[i]++;
+				}
 			}
 		}
       });
@@ -441,7 +445,6 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
       angular.forEach(answer.emailid, function(value, key) { 
 
     	emailist = emailist + value +  "\n" ;
-    	console.log(emailist); 
         });
 
       
@@ -451,13 +454,13 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
 
     for(var i=0;i<tempAnswerCount.length;i++){
 		tempAnswers.push({
-			v: $scope.tempArray[i].text
+			v: tempArray[i].text
 		});
 		tempAnswers.push({
 			v: tempAnswerCount[i]
 		});
 		
-		$scope.chartAnswers.push({
+		chartAnswers.push({
 			c: tempAnswers
 		});
 		tempAnswers = [];
@@ -478,12 +481,12 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
 	chart1.type = "AreaChart";
 	chart1.cssStyle = "height:300px; width:500px;";
     
-    $scope.chartQuestions = [
-                             {id: questionTitle, label: questionTitle, type: "string"},
-                             {id: questionTitle, label: questionTitle, type: "number"}
-                         ];
+    chartQuestions = [
+                      {id: questionTitle, label: questionTitle, type: "string"},
+                      {id: questionTitle, label: questionTitle, type: "number"}
+                     ];
     
-    chart1.data = {"cols": $scope.chartQuestions, "rows": $scope.chartAnswers};
+    chart1.data = {"cols": chartQuestions, "rows": chartAnswers};
 
     var gridlineCount=0;
     for(var i=0;i<tempAnswerCount.length;i++){
@@ -503,7 +506,7 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
             "title": "Count", "gridlines": gridlines
         },
         "hAxis": {
-            "title": $scope.chartQuestions[0].title
+            "title": chartQuestions[0].title
         }
     };
 
@@ -511,7 +514,88 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
 
     $scope.chart = chart1;
     
+    var tempQuestion;
+    var tempQuestionId;
     
+    $scope.chartChange = function(){
+    	tempAnswerCount = [];
+        tempAnswers = [];
+        chartAnswers = [];
+    	tempQuestion = $scope.selectedQuestion;
+    	if(tempQuestion != null) {
+	    	angular.forEach(questions, function(question, key) {
+	    		if (tempQuestion.name == question.title) {
+	    			tempArray = question.options;
+	    			tempQuestionId = question.questionId;
+	    		}
+	    		
+	    	});
+	    	
+	    	for(var i=0;i<tempArray.length;i++){
+	    		tempAnswerCount.push(0);
+	    	}
+	    	
+	    	angular.forEach(answers, function(answer, key) {
+	    		angular.forEach(answer.result, function(value, key) {
+	    			if(tempQuestionId == key){
+	    				for(var i=0;i<tempAnswerCount.length;i++){
+	    					tempSplitData = value.split(',');
+	    					for(var j=0;j<tempSplitData.length;j++){
+	    						if(tempArray[i].text==tempSplitData[j]){
+		    						tempAnswerCount[i]++;
+		    					}
+	    					}
+	    				}
+	    			}
+	    		});
+	    	});
+    	
+	    	for(var i=0;i<tempAnswerCount.length;i++){
+	    		tempAnswers.push({
+	    			v: tempArray[i].text
+	    		});
+	    		tempAnswers.push({
+	    			v: tempAnswerCount[i]
+	    		});
+	    		
+	    		chartAnswers.push({
+	    			c: tempAnswers
+	    		});
+	    		tempAnswers = [];
+	    		
+	    	}
+    	
+	    	chartQuestions = [
+	                             {id: questionTitle, label: questionTitle, type: "string"},
+	                             {id: questionTitle, label: tempQuestion.name, type: "number"}
+	                         ];
+	    	
+	    	chart1.data = {"cols": chartQuestions, "rows": chartAnswers};
+    	
+	    	gridlineCount=0;
+	        for(var i=0;i<tempAnswerCount.length;i++){
+	        	if(gridlineCount<tempAnswerCount[i]){
+	        		gridlineCount=tempAnswerCount[i];
+	        	}
+	        }
+	        
+	        gridlines = {"count": gridlineCount+1};
+	        
+	        
+	        chart1.options = {
+	                "title": $scope.survey.title,
+	                "isStacked": "true",
+	                "fill": 20,
+	                "displayExactValues": true,
+	                "vAxis": {
+	                    "title": "Count", "gridlines": gridlines
+	                },
+	                "hAxis": {
+	                    "title": chartQuestions[0].title
+	                }
+	            };
+    	}
+    }
     
     $scope.request = {
     	      link : $location.protocol() + '://' + $location.host()
@@ -543,7 +627,6 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
     
     $scope.sendByEmail = function() {
     	
-    	console.log("sendByEmail");
         $scope.emails = [];
         
         $scope.emailResults = [];
@@ -575,9 +658,7 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
     	if(!$scope.emails.isNotValid && $scope.emails != ''){
     		angular.forEach($scope.emails, function(value, key){
     			$http.post('/rest/survey/' + $scope.survey.surveyId + '/send', $.param({email: value.message}), { headers: { "Content-Type": "application/x-www-form-urlencoded" } }).success(function(response){
-    				console.log(response);
     			}).error(function(err){
-    				console.log(err);
     				$scope.emailResults.push({
     					isError: true,
     					message: value.message
