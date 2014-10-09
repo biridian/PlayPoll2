@@ -16,7 +16,7 @@
       <label for="question-type" class="col-sm-2 control-label">이메일</label>
       <div class="col-sm-10">
         <textarea class="form-control" rows="3" ng-model="request.email"></textarea>
-        <span class="help-block">* 복수의 이메일 주소를 여러 줄로 구분하여 전송할 수 있습니다.</span>
+        <span class="help-block">* 복수의 이메일 주소를 여러 줄로 구분하여 전송할 수 있습니다 테스트.</span>
         <button type="button" class="btn btn-default" ng-click="sendByEmail()">전송</button><p>
         <div ng-if="emails.isNotValid">
 			<span class="validError" ng-show="emails.isNotValid">잘못된 형식의 이메일 주소입니다 : </span><br>
@@ -29,8 +29,24 @@
   			<span class="sendError" ng-show="emailResults.isError">메일 발송에 실패하였습니다 : </span><br>
   			<span class="sendErrorList" ng-repeat="emailResult in emailResults" ng-show="emailResult.isError">{{emailResult.message}}<br></span>
   		</div>
-      </div>
+  		 </div>
     </div>
+       <hr />
+    <div class="form-group">
+
+<!--     
+  <script src="js/vendor/jquery-2.1.0.min.js"></script>
+  <script src="js/vendor/bootstrap.min.js"></script>
+  <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script> 
+  --> 
+  
+      <label for="question-type2" class="col-sm-2 control-label">카카오톡</label>
+      
+  <a id="kakao-link-btn" href="javascript:;">
+      <img src="http://dn.api1.kage.kakao.co.kr/14/dn/btqa9B90G1b/GESkkYjKCwJdYOkLvIBKZ0/o.jpg" />
+    </a>
+    </div>
+<!-- 
 	<hr ng-if="checkMobile()" />
     <div class="form-group" ng-if="checkMobile()">
       <label for="share-kakao" class="col-sm-2 control-label">카카오톡</label>
@@ -41,8 +57,34 @@
         <span class="help-block">* 카카오톡이 설치된 모바일 디바이스에서 공유할 수 있습니다.</span>
       </div>
     </div>
+ -->  
+    
+    
   </form>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-primary" ng-click="cancel()">닫기</button>
 </div>
+
+
+  
+      <script>
+    // 사용할 앱의 Javascript 키를 설정해 주세요.
+//    Kakao.init('257cefb61c7f912a4e696470b82afccf');
+
+    // 카카오톡 링크 버튼을 생성합니다. 처음 한번만 호출하면 됩니다.
+    Kakao.Link.createTalkLinkButton({
+      container: '#kakao-link-btn',
+      label: 'Any play poll! 설문에 참여해주세요',
+      image: {
+        src: 'http://dn.api1.kage.kakao.co.kr/14/dn/btqaWmFftyx/tBbQPH764Maw2R6IBhXd6K/o.jpg',
+        width: '300',
+        height: '200'
+      },
+      webButton: {
+        text: '설문 참여하기',
+        url: 'http://54.68.13.217:8080/request/2c9f985c48ddc6260148ddccec910000' 
+        // 앱 설정의 웹 플랫폼에 등록한 도메인의  URL http://54.68.13.217:8080이어야 합니다.
+      }
+    });
+    </script>
