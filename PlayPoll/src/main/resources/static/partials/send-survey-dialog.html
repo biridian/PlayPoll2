@@ -36,23 +36,10 @@
     
   <hr ng-if="checkMobile()" /> 
     <div class="form-group ng-if="checkMobile()">
-
-    
-  <script src="js/vendor/jquery-2.1.0.min.js"></script>
-  <script src="js/vendor/bootstrap.min.js"></script>
-  <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script> 
- 
-  
-      <label for="question-type2" class="col-sm-2 control-label">카카오톡</label>
-      
-      <!--  
-  <a id="kakao-link-btn" href="javascript:;">
-      <img src="http://dn.api1.kage.kakao.co.kr/14/dn/btqa9B90G1b/GESkkYjKCwJdYOkLvIBKZ0/o.jpg" />
-    </a>
-    -->
-       <button type="button" id="kakao-link-btn" class="btn btn-default" ng-click="sendBykakao()">카카오톡</button><p>
-       
-       
+    <label for="question-type2" class="col-sm-2 control-label">카카오톡</label>
+    <button type="button" id="kakao-link-btn" class="btn btn-default" ng-click="sendBykakao()">
+    <img src="/images/kakaolink_btn_medium.png"/> 
+    </button><p>
     </div>
   
 <!-- 
@@ -75,29 +62,5 @@
   <button type="button" class="btn btn-primary" ng-click="cancel()">닫기</button>
 </div>
 
-<!--  
-  <script>
-    // 사용할 앱의 Javascript 키를 설정해 주세요.
-   // Kakao.init('257cefb61c7f912a4e696470b82afccf');
-   
-var x=document.getElementById("link").innerHTML;
-console.log(x);
-    // 카카오톡 링크 버튼을 생성합니다. 처음 한번만 호출하면 됩니다.
-    Kakao.Link.createTalkLinkButton({
-      container: '#kakao-link-btn',
-      label: 'Any play poll! 설문에 참여해주세요',
-      image: {
-        src: 'http://dn.api1.kage.kakao.co.kr/14/dn/btqaWmFftyx/tBbQPH764Maw2R6IBhXd6K/o.jpg',
-        width: '300',
-        height: '200'
-      },
-      webButton: {
-        text: '설문 참여하기',
-        url: 'http://54.68.13.217:8080/request/2c9f985c48ddc6260148ddccec910000' 
-        //url: 'http://54.68.13.217:8080/request/2c9f985c48ddc6260148ddccec910000' 
-        // 앱 설정의 웹 플랫폼에 등록한 도메인의  URL http://54.68.13.217:8080이어야 합니다.
-      }
-    });
-    </script>
-    -->
+
     
