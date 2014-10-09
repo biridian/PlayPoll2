@@ -65,7 +65,7 @@ config(['$routeProvider', function($routeProvider) {
   };
 })
 .run(function($rootScope) {
- Kakao.init('257cefb61c7f912a4e696470b82afccf');
+ Kakao.init('257cefb61c7f912a4e696470b82afccf');  //없애면 안됨
   
   $rootScope.questionTypes = [
     {text:'단답',value:'TEXT'},
