@@ -153,7 +153,7 @@ surveyControllers.controller('SendSurveyModalController', ['$scope', '$routePara
         label: 'Any play poll! 설문에 참여해주세요',
         image: {
          // src: 'http://dn.api1.kage.kakao.co.kr/14/dn/btqaWmFftyx/tBbQPH764Maw2R6IBhXd6K/o.jpg',
-            src: '/images/survey_3.png' ,
+            src: 'images/survey_3.png' ,
             width: '300',
             height: '200'
         },
@@ -599,7 +599,7 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
             container: '#kakao-link-btn',
             label: 'Any play poll! 참여하신 설문의 결과 입니다',
             image: {
-              src:  '/images/poll_result.jpg' ,
+              src:  'images/poll_result.jpg' ,
               width: '300',
               height: '200'
             },
