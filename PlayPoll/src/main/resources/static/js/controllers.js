@@ -406,10 +406,12 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
 		});
 		questionTitle = question.title;
 		if (question.options != null) {
-			$scope.graghisrequired = true;
 			question.options = JSON.parse(question.options);
-			$scope.selectQuestionOptions.push({name:question.title});
-			tempArray = question.options;
+			if((question.type == "MULTIPLE_CHOICE") || (question.type == "CHECKBOXES") || (question.type == "DROPDOWN")){
+				$scope.graghisrequired = true;
+				$scope.selectQuestionOptions.push({name:question.title});
+				tempArray = question.options;
+			}
 		}
 	});
     
