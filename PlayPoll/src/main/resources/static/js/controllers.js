@@ -519,11 +519,11 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
     var tempQuestion;
     var tempQuestionId;
     
-    $scope.chartChange = function(){
+    $scope.chartChange = function(selectedQuestion){
     	tempAnswerCount = [];
         tempAnswers = [];
         chartAnswers = [];
-    	tempQuestion = $scope.selectedQuestion;
+    	tempQuestion = this.selectedQuestion;
     	if(tempQuestion != null) {
 	    	angular.forEach(questions, function(question, key) {
 	    		if (tempQuestion.name == question.title) {
