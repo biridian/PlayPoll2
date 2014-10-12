@@ -28,12 +28,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf()
 				.disable()
-			.authorizeRequests()
-				.antMatchers("/login", "/logout", "/user", "/request/**").permitAll()
-				.anyRequest()
-				.authenticated()
-				.and()
-			.formLogin()
+		.authorizeRequests()
+	    .antMatchers("/login", "/logout", "/user", "/request/**","/sharedreport/**").permitAll()
+		//	.antMatchers("/login", "/logout", "/user").permitAll()
+    	.and()
+    	.authorizeRequests()
+	   // .anyRequest()
+       //	  .authenticated()
+			.and()
+		.formLogin()
 				.loginPage("/login")
 				.failureUrl("/login?error")
 				.permitAll();
@@ -41,7 +44,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/fonts/**", "/samples/**", "/join/**", "/user**", "/partials/**", "/response/**");
+		web.ignoring().antMatchers("/fonts/**", "/samples/**", "/join/**", "/user**","/js/**", "/partials/**", "/response/**","/sharedreport/**");
+		//web.ignoring().antMatchers("/fonts/**", "/samples/**", "/join/**", "/user**", "/response/**","/sharedreport/**");
 	}
 
 }

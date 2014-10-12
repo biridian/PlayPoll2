@@ -63,8 +63,17 @@ public class HomeController {
 	
 	@RequestMapping("")
 	public String main(Map<String, Object> model) {
+		System.out.println("Hi!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" );
 		return "home";
 	}
+	
+	@RequestMapping("sharedreport")
+	//http://localhost:8080/sharedreport/#/sharedreport/2c9f985c48ddc6260148ddccec910000
+	public String sharedreporthome(Map<String, Object> model) {
+		System.out.println("THERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" );
+		return "sharedreporthome";
+	}
+	
 	
 	@RequestMapping("request/{surveyId}")
 	public String reqeust(Map<String, Object> model, @PathVariable String surveyId) {
@@ -102,6 +111,8 @@ public class HomeController {
 		
 		return "request";
 	}
+	
+	
 	
 	@RequestMapping(value = "response/{surveyId}", consumes = { "application/x-www-form-urlencoded" })
 	public String response(Map<String, Object> model, @RequestBody MultiValueMap<String, String> param, @PathVariable String surveyId) {

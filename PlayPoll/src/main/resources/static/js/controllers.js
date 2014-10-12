@@ -606,13 +606,19 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
     	      email : ''
     	    };
     
-    
-    $scope.resultlink = {
-    	     link : $location.protocol() + '://' + $location.host()
-    	          + ($location.port() != 80 ? ':' + $location.port() : '')
-    	          + '/survey/' + $scope.survey.surveyId + '/report'
-    	    };
-    
+       
+	$scope.resultlink = {
+			link : $location.protocol()
+					+ '://'
+					+ $location.host()
+					+ ($location.port() != 80 ? ':'
+							+ $location.port() : '')
+					+ '/sharedreport/#/sharedreport/'
+					+ $scope.survey.surveyId
+
+		};
+	
+	
     
     $scope.checkMobile = function() {
         var check = false;
@@ -691,8 +697,190 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
             }
           });
         }
-
     
+    $scope.sendBykakao = function() {
+
+		Kakao.Link.createTalkLinkButton({
+			container : '#kakao-link-btn',
+			label : 'Any play poll! 참여하신 설문의 결과 입니다',
+			image : {
+				src : 'images/poll_result.jpg',
+				width : '300',
+				height : '200'
+			},
+			webButton : {
+				text : '설문 결과 보러가기',
+				url : $scope.resultlink.link
+			// 앱 설정의 웹 플랫폼에 등록한 도메인의 URL이어야 합니다.
+			}
+		});
+	}
+    $scope.sendBykakao = function() {
+
+    	Kakao.Link.createTalkLinkButton({
+    		container : '#kakao-link-btn',
+    		label : 'Any play poll! 참여하신 설문의 결과 입니다',
+    		image : {
+    			src : 'images/poll_result.jpg',
+    			width : '300',
+    			height : '200'
+    		},
+    		webButton : {
+    			text : '설문 결과 보러가기',
+    			url : $scope.resultlink.link
+    		// 앱 설정의 웹 플랫폼에 등록한 도메인의 URL이어야 합니다.
+    		}
+    	});
+    }   
+
 
   } 
 ]);
+
+
+surveyControllers.controller('SharedReportController', [
+                                                		'$scope',
+                                                		'$routeParams',
+                                                		'$location',
+                                                		'$filter',
+                                                		'$http',
+                                                		'survey',
+                                                		'questions',
+                                                		'answers',
+                                                		function($scope, $routeParams, $location, $filter, $http, survey,
+                                                				questions, answers) {
+
+                                                			$scope.survey = survey;
+                                                			$scope.questionColumns = [];
+                                                			$scope.answerData = [];
+                                                			$scope.resultyn = survey.result;
+                                                			$scope.chartQuestions = [];
+                                                			$scope.chartAnswers = [];
+                                                			$scope.tempArray = [];
+                                                			var tempAnswerCount = [];
+                                                			var tempAnswers = [];
+                                                			var questionTitle;
+
+                                                			var emailist = "";
+
+                                                			// 컬럼 정의
+                                                			$scope.questionColumns.push({
+                                                				field : 'num',
+                                                				displayName : '순번',
+                                                				width : 45
+                                                			});
+
+                                                			$scope.questionColumns.push({
+                                                				field : 'createdDate',
+                                                				displayName : '응답시간',
+                                                				width : 160
+                                                			});
+
+                                                			angular.forEach(questions, function(question, key) {
+                                                				$scope.graghisrequired = true; // 질문 타입에 따라 파이 그래프 출력 여부 결정
+
+                                                				if ((question.type == "TEXT")
+                                                						|| (question.type == "PARAGRAPH_TEXT"))
+                                                					$scope.graghisrequired = false;
+
+                                                				$scope.questionColumns.push({
+                                                					field : "q" + question.questionId,
+                                                					displayName : question.title
+                                                				});
+                                                				questionTitle = question.title;
+                                                				if (question.options != null) {
+                                                					question.options = JSON.parse(question.options);
+                                                					$scope.tempArray = question.options
+                                                				}
+                                                			});
+
+                                                			for (var i = 0; i < $scope.tempArray.length; i++) {
+                                                				tempAnswerCount.push(0);
+                                                			}
+
+                                                			// 데이터 정의
+                                                			angular.forEach(answers, function(answer, key) {
+
+                                                				var answerRow = {
+                                                					num : key + 1,
+                                                					createdDate : $filter('date')(answer.createdDate,
+                                                							'yyyy-MM-dd HH:mm:ss')
+                                                				};
+
+                                                				angular.forEach(answer.result, function(value, key) {
+                                                					var keyString = "q" + key;
+                                                					answerRow[keyString] = value;
+
+                                                					for (var i = 0; i < tempAnswerCount.length; i++) {
+                                                						if ($scope.tempArray[i].text == value) {
+                                                							tempAnswerCount[i]++;
+                                                						}
+                                                					}
+                                                				});
+
+                                                				$scope.answerData.push(answerRow);
+                                                			});
+
+                                                			for (var i = 0; i < tempAnswerCount.length; i++) {
+                                                				tempAnswers.push({
+                                                					v : $scope.tempArray[i].text
+                                                				});
+                                                				tempAnswers.push({
+                                                					v : tempAnswerCount[i]
+                                                				});
+
+                                                				$scope.chartAnswers.push({
+                                                					c : tempAnswers
+                                                				});
+                                                				tempAnswers = [];
+                                                			}
+
+                                                			var chart1 = {};
+                                                			chart1.type = "AreaChart";
+                                                			chart1.cssStyle = "height:300px; width:500px;";
+
+                                                			$scope.chartQuestions = [ {
+                                                				id : questionTitle,
+                                                				label : questionTitle,
+                                                				type : "string"
+                                                			}, {
+                                                				id : questionTitle,
+                                                				label : questionTitle,
+                                                				type : "number"
+                                                			} ];
+
+                                                			chart1.data = {
+                                                				"cols" : $scope.chartQuestions,
+                                                				"rows" : $scope.chartAnswers
+                                                			};
+
+                                                			var gridlineCount = 0;
+                                                			for (var i = 0; i < tempAnswerCount.length; i++) {
+                                                				if (gridlineCount < tempAnswerCount[i]) {
+                                                					gridlineCount = tempAnswerCount[i];
+                                                				}
+                                                			}
+
+                                                			var gridlines = {
+                                                				"count" : gridlineCount + 1
+                                                			};
+
+                                                			chart1.options = {
+                                                				"title" : $scope.survey.title,
+                                                				"isStacked" : "true",
+                                                				"fill" : 20,
+                                                				"displayExactValues" : true,
+                                                				"vAxis" : {
+                                                					"title" : "Count",
+                                                					"gridlines" : gridlines
+                                                				},
+                                                				"hAxis" : {
+                                                					"title" : $scope.chartQuestions[0].title
+                                                				}
+                                                			};
+
+                                                			chart1.formatters = {};
+
+                                                			$scope.chart = chart1;
+
+                                                		} ]);
