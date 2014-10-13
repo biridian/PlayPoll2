@@ -23,7 +23,7 @@ config(['$routeProvider', function($routeProvider) {
 		    	  console.log("FOCUS");
 		   	  console.log($route.current.params.surveyId);
 		   	console.log($route.current);
-		       return Survey.get({surveyId: $route.current.params.surveyId}).$promise;
+		       return Survey.get({surveyId: $rsoute.current.params.surveyId}).$promise;
 		     },
 		     questions: function ($route, Question) {
 		      return Question.query({surveyId : $route.current.params.surveyId}).$promise;
