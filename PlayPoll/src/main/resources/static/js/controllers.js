@@ -687,7 +687,7 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
             container: '#kakao-link-btn',
             label: 'Any play poll! 참여하신 설문의 결과 입니다',
             image: {
-              src:  'images/poll_result.jpg' ,
+            	 src: 'http://dn.api1.kage.kakao.co.kr/14/dn/btqaWmFftyx/tBbQPH764Maw2R6IBhXd6K/o.jpg',
               width: '300',
               height: '200'
             },
@@ -698,23 +698,7 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
           });
         }
     
-    $scope.sendBykakao = function() {
-
-		Kakao.Link.createTalkLinkButton({
-			container : '#kakao-link-btn',
-			label : 'Any play poll! 참여하신 설문의 결과 입니다',
-			image : {
-				src : 'images/poll_result.jpg',
-				width : '300',
-				height : '200'
-			},
-			webButton : {
-				text : '설문 결과 보러가기',
-				url : $scope.resultlink.link
-			// 앱 설정의 웹 플랫폼에 등록한 도메인의 URL이어야 합니다.
-			}
-		});
-	}
+   
     $scope.sendBykakao = function() {
 
     	Kakao.Link.createTalkLinkButton({

@@ -14,7 +14,7 @@ angular.module('pollApp', [
   'googlechart'
 ]).
 config(['$routeProvider', function($routeProvider) {
-	$routeProvider.when('/sharedreport/:surveyId' ,
+	$routeProvider.when('/sharedreport/#/sharedreport/:surveyId' ,
 			          {templateUrl: '../partials/sharedreport.html', 
 		              controller: 'SharedReportController', 
 		  
