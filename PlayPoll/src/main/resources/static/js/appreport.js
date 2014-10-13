@@ -15,7 +15,7 @@ angular.module('pollApp', [
 ]).
 config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/sharedreport/:surveyId' ,
-			          {templateUrl: '../../../partials/sharedreport.html', 
+			          {templateUrl: '../partials/sharedreport.html', 
 		              controller: 'SharedReportController', 
 		  
 		  resolve: {
