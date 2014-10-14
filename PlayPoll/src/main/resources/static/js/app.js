@@ -1,5 +1,6 @@
 'use strict';
-
+console.log("here1");
+console.log(document.location.href);
 
 // Declare app level module which depends on filters, and services
 angular.module('pollApp', [
@@ -32,7 +33,21 @@ config(['$routeProvider', function($routeProvider) {
      }
     }
   });
-  $routeProvider.otherwise({redirectTo: '/survey'});
+  $routeProvider.when('/survey/:surveyId/sharedreport', {templateUrl: 'partials/sharedreport.html', controller: 'SharedReportController', 
+	    resolve: {
+	     survey: function ($route, Survey) {
+	       return Survey.get({surveyId: $route.current.params.surveyId}).$promise;
+	     },
+	     questions: function ($route, Question) {
+	       return Question.query({surveyId : $route.current.params.surveyId}).$promise;
+	     },
+	     answers: function ($route, Answer) {
+	       return Answer.query({surveyId: $route.current.params.surveyId}).$promise;
+	     }
+	    }
+	  });
+  $routeProvider.otherwise(
+		{redirectTo: '/survey'});
 }])
 .directive('kakaoLink', function() {
   return {
