@@ -367,6 +367,9 @@ surveyControllers.controller('PreviewController', ['$scope', '$routeParams', '$t
 surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$location', '$filter', '$http', 'survey', 'questions', 'answers',
   function($scope, $routeParams, $location, $filter,$http, survey, questions, answers) {
   	 
+	console.log("hi controller");
+	
+	
     $scope.survey = survey;
     $scope.questionColumns = [];
     $scope.answerData = [];
@@ -613,8 +616,9 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
 					+ $location.host()
 					+ ($location.port() != 80 ? ':'
 							+ $location.port() : '')
-					+ '/sharedreport/#/sharedreport/'
+					+ '/#/survey/'
 					+ $scope.survey.surveyId
+					+ '/sharedreport'
 
 		};
 	
