@@ -69,7 +69,7 @@
                 <button ng-if="survey.status === '01'" class="btn btn-info btn-xs" ng-click="changeSurveyStatus(survey, '02')"><span class="glyphicon glyphicon-check"></span> 시작</button>
                 <button ng-if="survey.status === '02'" class="btn btn-warning btn-xs" ng-click="openSendSurveyModal(survey.surveyId)"><span class="glyphicon glyphicon-send"></span> 요청</button>
                 <button ng-if="survey.status === '02'" class="btn btn-danger btn-xs" ng-click="changeSurveyStatus(survey, '03')"><span class="glyphicon glyphicon-time"></span> 종료</button>
-                <a href="#/survey/{{survey.surveyId}}/report" ng-if="survey.status === '03'" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-list-alt"></span> 결과</a>
+                <a href="#/survey/{{survey.surveyId}}/report" ng-if="survey.status === '03' || survey.status === '02'" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-list-alt"></span> 결과</a>
               </div>
             </td>
           </tr>
