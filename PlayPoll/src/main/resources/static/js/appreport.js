@@ -1,5 +1,6 @@
 'use strict';
 console.log("here2");
+console.log(document.location.href);
 
 // Declare app level module which depends on filters, and services
 angular.module('pollApp', [
@@ -14,27 +15,30 @@ angular.module('pollApp', [
   'googlechart'
 ]).
 config(['$routeProvider', function($routeProvider) {
-	$routeProvider.when('/sharedreport/:surveyId' ,
-			          {templateUrl: '../partials/sharedreport.html', 
-		              controller: 'SharedReportController', 
-		  
-		  resolve: {
-		     survey: function ($route, Survey) {
-		    	  console.log("FOCUS");
-		   	  console.log($route.current.params.surveyId);
-		   	console.log($route.current);
-		       return Survey.get({surveyId: $rsoute.current.params.surveyId}).$promise;
-		     },
-		     questions: function ($route, Question) {
-		      return Question.query({surveyId : $route.current.params.surveyId}).$promise;
-		     },
-		     answers: function ($route, Answer) {
-		      return Answer.query({surveyId: $route.current.params.surveyId}).$promise;
-		     }
-		    }
-		  });
+	   $routeProvider.when('/sharedreport/:surveyId',
+	{templateUrl: 'partials/sharedreport.html', 
+                 controller: 'SharedReportController', 
+                resolve: {
+                    survey: function ($route, Survey) {
+                       console.log("FOCUS");
+                       console.log($route.current.params.surveyId);
+                       console.log($route.current);
+                     return Survey.get({surveyId: $route.current.params.surveyId}).$promise;
+                   },
+                   questions: function ($route, Question) {
+                    return Question.query({surveyId : $route.current.params.surveyId}).$promise;
+                   },
+                   answers: function ($route, Answer) {
+                    return Answer.query({surveyId: $route.current.params.surveyId}).$promise;
+                   }
+              }
+  
+    }
+);
+console.log("FOCUS2");
+ $routeProvider.otherwise({redirectTo: '/123'});
+	
 
-	  $routeProvider.otherwise({redirectTo: '/sharedreport'});
 
 	}])
 	.directive('kakaoLink', function() {
