@@ -63,15 +63,13 @@ public class HomeController {
 	
 	@RequestMapping("")
 	public String main(Map<String, Object> model) {
-		System.out.println("Hi!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" );
 		return "home";
 	}
 	
 
-	@RequestMapping("sharedreport")
-	 public String sharedreporthome(Map<String, Object> model, @PathVariable String surveyId) {
-	     System.out.println("THERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" );
-	     System.out.println(surveyId);
+	@RequestMapping("sharedreport/")
+	 public String sharedreporthome(Map<String, Object> model) {
+	    //http://localhost:8080/sharedreport#/sharedreport/4028808348ddd4bd0148ddd987a10000
 	      return "sharedreporthome";
 	   }
 	

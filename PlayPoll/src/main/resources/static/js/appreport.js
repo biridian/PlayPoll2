@@ -36,7 +36,7 @@ config(['$routeProvider', function($routeProvider) {
     }
 );
 console.log("FOCUS2");
- $routeProvider.otherwise({redirectTo: '/123'});
+ $routeProvider.otherwise({redirectTo: '/sharedreport'});
 	
 
 
