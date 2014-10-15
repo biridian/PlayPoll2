@@ -722,137 +722,249 @@ surveyControllers.controller('SharedReportController', [
                                                 		function($scope, $routeParams, $location, $filter, $http, survey,
                                                 				questions, answers) {
 
-                                                			$scope.survey = survey;
-                                                			$scope.questionColumns = [];
-                                                			$scope.answerData = [];
-                                                			$scope.resultyn = survey.result;
-                                                			$scope.chartQuestions = [];
-                                                			$scope.chartAnswers = [];
-                                                			$scope.tempArray = [];
+                                                			console.log("hi controller");
+                                                			
+                                                			
+                                                		    $scope.survey = survey;
+                                                		    $scope.questionColumns = [];
+                                                		    $scope.answerData = [];
+                                                		    $scope.resultyn = survey.result;
+                                                		    var chartQuestions = [];
+                                                			var chartAnswers = [];
+                                                			var tempArray = [];
                                                 			var tempAnswerCount = [];
                                                 			var tempAnswers = [];
+                                                			var tempSplitData = [];
                                                 			var questionTitle;
-
-                                                			var emailist = "";
-
-                                                			// 컬럼 정의
-                                                			$scope.questionColumns.push({
-                                                				field : 'num',
-                                                				displayName : '순번',
-                                                				width : 45
-                                                			});
-
-                                                			$scope.questionColumns.push({
-                                                				field : 'createdDate',
-                                                				displayName : '응답시간',
-                                                				width : 160
-                                                			});
-
+                                                		    
+                                                			$scope.selectQuestionOptions = [];
+                                                			$scope.selectedQuestion;
+                                                			
+                                                		    var emailist = "";
+                                                		    
+                                                		    // 컬럼 정의
+                                                		    $scope.questionColumns.push({
+                                                		      field: 'num',
+                                                		      displayName: '순번',
+                                                		      width: 45
+                                                		    });
+                                                		    
+                                                		    $scope.questionColumns.push({
+                                                		      field: 'createdDate',
+                                                		      displayName: '응답시간',
+                                                		      width: 160
+                                                		    });
+                                                		    
+                                                		    $scope.graghisrequired = false; //질문 타입에 따라 그래프  출력 여부 결정
                                                 			angular.forEach(questions, function(question, key) {
-                                                				$scope.graghisrequired = true; // 질문 타입에 따라 파이 그래프 출력 여부 결정
-
-                                                				if ((question.type == "TEXT")
-                                                						|| (question.type == "PARAGRAPH_TEXT"))
-                                                					$scope.graghisrequired = false;
-
+                                                		    	
                                                 				$scope.questionColumns.push({
-                                                					field : "q" + question.questionId,
-                                                					displayName : question.title
+                                                					field: "q" + question.questionId,
+                                                					displayName: question.title
                                                 				});
                                                 				questionTitle = question.title;
                                                 				if (question.options != null) {
                                                 					question.options = JSON.parse(question.options);
-                                                					$scope.tempArray = question.options
+                                                					if((question.type == "MULTIPLE_CHOICE") || (question.type == "CHECKBOXES") || (question.type == "DROPDOWN")){
+                                                						$scope.graghisrequired = true;
+                                                						$scope.selectQuestionOptions.push({name:question.title});
+                                                						tempArray = question.options;
+                                                					}
                                                 				}
                                                 			});
-
-                                                			for (var i = 0; i < $scope.tempArray.length; i++) {
+                                                		    
+                                                			for(var i=0;i<tempArray.length;i++){
                                                 				tempAnswerCount.push(0);
                                                 			}
+                                                			
+                                                		    // 데이터 정의
+                                                		    angular.forEach(answers, function(answer, key) {
+                                                		      
+                                                		      var answerRow = {
+                                                		          num: key + 1,
+                                                		          createdDate: $filter('date')(answer.createdDate, 'yyyy-MM-dd HH:mm:ss')
+                                                		      };
 
-                                                			// 데이터 정의
-                                                			angular.forEach(answers, function(answer, key) {
-
-                                                				var answerRow = {
-                                                					num : key + 1,
-                                                					createdDate : $filter('date')(answer.createdDate,
-                                                							'yyyy-MM-dd HH:mm:ss')
-                                                				};
-
-                                                				angular.forEach(answer.result, function(value, key) {
-                                                					var keyString = "q" + key;
-                                                					answerRow[keyString] = value;
-
-                                                					for (var i = 0; i < tempAnswerCount.length; i++) {
-                                                						if ($scope.tempArray[i].text == value) {
+                                                		      angular.forEach(answer.result, function(value, key) {  
+                                                		        var keyString = "q" + key;
+                                                		        answerRow[keyString] = value;
+                                                		        
+                                                		        for(var i=0;i<tempAnswerCount.length;i++){
+                                                		        	tempSplitData = value.split(',');
+                                                					for(var j=0;j<tempSplitData.length;j++){
+                                                						if(tempArray[i].text==tempSplitData[j]){
                                                 							tempAnswerCount[i]++;
                                                 						}
                                                 					}
-                                                				});
+                                                				}
+                                                		      });
+                                                		      
+                                                		   
+                                                		      
+                                                		      
+                                                		      angular.forEach(answer.emailid, function(value, key) { 
 
-                                                				$scope.answerData.push(answerRow);
-                                                			});
+                                                		    	emailist = emailist + value +  "\n" ;
+                                                		        });
 
-                                                			for (var i = 0; i < tempAnswerCount.length; i++) {
+                                                		      
+                                                		      
+                                                		      $scope.answerData.push(answerRow);
+                                                		    }); 
+
+                                                		    for(var i=0;i<tempAnswerCount.length;i++){
                                                 				tempAnswers.push({
-                                                					v : $scope.tempArray[i].text
+                                                					v: tempArray[i].text
                                                 				});
                                                 				tempAnswers.push({
-                                                					v : tempAnswerCount[i]
+                                                					v: tempAnswerCount[i]
                                                 				});
-
-                                                				$scope.chartAnswers.push({
-                                                					c : tempAnswers
+                                                				
+                                                				chartAnswers.push({
+                                                					c: tempAnswers
                                                 				});
                                                 				tempAnswers = [];
                                                 			}
+                                                		  
+                                                		    var csvOpts = { columnOverrides: { obj: function(o) { return o.a + '|' +  o.b; } } };
+                                                		    var hgtOpts = { minHeight: 200 };
+                                                		    
+                                                		    $scope.gridOptions = { 
+                                                		      data: 'answerData',
+                                                		      columnDefs: $scope.questionColumns,
+                                                		      plugins: [new ngGridCsvExportPlugin(csvOpts),new ngGridFlexibleHeightPlugin(hgtOpts)],
+                                                		      showGroupPanel: true,
+                                                		      showFooter: true
+                                                		    };
 
-                                                			var chart1 = {};
+                                                		    var chart1 = {};
                                                 			chart1.type = "AreaChart";
                                                 			chart1.cssStyle = "height:300px; width:500px;";
+                                                		    
+                                                		    chartQuestions = [
+                                                		                      {id: questionTitle, label: questionTitle, type: "string"},
+                                                		                      {id: questionTitle, label: questionTitle, type: "number"}
+                                                		                     ];
+                                                		    
+                                                		    chart1.data = {"cols": chartQuestions, "rows": chartAnswers};
 
-                                                			$scope.chartQuestions = [ {
-                                                				id : questionTitle,
-                                                				label : questionTitle,
-                                                				type : "string"
-                                                			}, {
-                                                				id : questionTitle,
-                                                				label : questionTitle,
-                                                				type : "number"
-                                                			} ];
+                                                		    var gridlineCount=0;
+                                                		    for(var i=0;i<tempAnswerCount.length;i++){
+                                                		    	if(gridlineCount<tempAnswerCount[i]){
+                                                		    		gridlineCount=tempAnswerCount[i];
+                                                		    	}
+                                                		    }
+                                                		    
+                                                		    var gridlines = {"count": gridlineCount+1};
+                                                		    
+                                                		    chart1.options = {
+                                                		        "title": $scope.survey.title,
+                                                		        "isStacked": "true",
+                                                		        "fill": 20,
+                                                		        "displayExactValues": true,
+                                                		        "vAxis": {
+                                                		            "title": "Count", "gridlines": gridlines
+                                                		        },
+                                                		        "hAxis": {
+                                                		            "title": chartQuestions[0].title
+                                                		        }
+                                                		    };
 
-                                                			chart1.data = {
-                                                				"cols" : $scope.chartQuestions,
-                                                				"rows" : $scope.chartAnswers
-                                                			};
+                                                		    chart1.formatters = {};
 
-                                                			var gridlineCount = 0;
-                                                			for (var i = 0; i < tempAnswerCount.length; i++) {
-                                                				if (gridlineCount < tempAnswerCount[i]) {
-                                                					gridlineCount = tempAnswerCount[i];
-                                                				}
-                                                			}
-
-                                                			var gridlines = {
-                                                				"count" : gridlineCount + 1
-                                                			};
-
-                                                			chart1.options = {
-                                                				"title" : $scope.survey.title,
-                                                				"isStacked" : "true",
-                                                				"fill" : 20,
-                                                				"displayExactValues" : true,
-                                                				"vAxis" : {
-                                                					"title" : "Count",
-                                                					"gridlines" : gridlines
-                                                				},
-                                                				"hAxis" : {
-                                                					"title" : $scope.chartQuestions[0].title
-                                                				}
-                                                			};
-
-                                                			chart1.formatters = {};
-
-                                                			$scope.chart = chart1;
+                                                		    $scope.chart = chart1;
+                                                		    
+                                                		    var tempQuestion;
+                                                		    var tempQuestionId;
+                                                		    
+                                                		    $scope.chartChange = function(selectedQuestion){
+                                                		    	tempAnswerCount = [];
+                                                		        tempAnswers = [];
+                                                		        chartAnswers = [];
+                                                		    	tempQuestion = this.selectedQuestion;
+                                                		    	if(tempQuestion != null) {
+                                                			    	angular.forEach(questions, function(question, key) {
+                                                			    		if (tempQuestion.name == question.title) {
+                                                			    			tempArray = question.options;
+                                                			    			tempQuestionId = question.questionId;
+                                                			    		}
+                                                			    		
+                                                			    	});
+                                                			    	
+                                                			    	for(var i=0;i<tempArray.length;i++){
+                                                			    		tempAnswerCount.push(0);
+                                                			    	}
+                                                			    	
+                                                			    	angular.forEach(answers, function(answer, key) {
+                                                			    		angular.forEach(answer.result, function(value, key) {
+                                                			    			if(tempQuestionId == key){
+                                                			    				for(var i=0;i<tempAnswerCount.length;i++){
+                                                			    					tempSplitData = value.split(',');
+                                                			    					for(var j=0;j<tempSplitData.length;j++){
+                                                			    						if(tempArray[i].text==tempSplitData[j]){
+                                                				    						tempAnswerCount[i]++;
+                                                				    					}
+                                                			    					}
+                                                			    				}
+                                                			    			}
+                                                			    		});
+                                                			    	});
+                                                		    	
+                                                			    	for(var i=0;i<tempAnswerCount.length;i++){
+                                                			    		tempAnswers.push({
+                                                			    			v: tempArray[i].text
+                                                			    		});
+                                                			    		tempAnswers.push({
+                                                			    			v: tempAnswerCount[i]
+                                                			    		});
+                                                			    		
+                                                			    		chartAnswers.push({
+                                                			    			c: tempAnswers
+                                                			    		});
+                                                			    		tempAnswers = [];
+                                                			    		
+                                                			    	}
+                                                		    	
+                                                			    	chartQuestions = [
+                                                			                             {id: questionTitle, label: questionTitle, type: "string"},
+                                                			                             {id: questionTitle, label: tempQuestion.name, type: "number"}
+                                                			                         ];
+                                                			    	
+                                                			    	chart1.data = {"cols": chartQuestions, "rows": chartAnswers};
+                                                		    	
+                                                			    	gridlineCount=0;
+                                                			        for(var i=0;i<tempAnswerCount.length;i++){
+                                                			        	if(gridlineCount<tempAnswerCount[i]){
+                                                			        		gridlineCount=tempAnswerCount[i];
+                                                			        	}
+                                                			        }
+                                                			        
+                                                			        gridlines = {"count": gridlineCount+1};
+                                                			        
+                                                			        
+                                                			        chart1.options = {
+                                                			                "title": $scope.survey.title,
+                                                			                "isStacked": "true",
+                                                			                "fill": 20,
+                                                			                "displayExactValues": true,
+                                                			                "vAxis": {
+                                                			                    "title": "Count", "gridlines": gridlines
+                                                			                },
+                                                			                "hAxis": {
+                                                			                    "title": chartQuestions[0].title
+                                                			                }
+                                                			            };
+                                                		    	}
+                                                		    }
+                                                		    
+                                                		
+                                                		    
+                                                		       
+                                                	
+                                                			
+                                                		
+                                                		    
+                                                	
+                                                		    
 
                                                 		} ]);
