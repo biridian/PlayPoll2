@@ -616,13 +616,13 @@ surveyControllers.controller('ReportController', [ '$scope', '$routeParams','$lo
 					+ $location.host()
 					+ ($location.port() != 80 ? ':'
 							+ $location.port() : '')
-					+ '/#/survey/'
+					+ '/sharedreport#/sharedreport/'
 					+ $scope.survey.surveyId
-					+ '/sharedreport'
+				
 
 		};
 	
-	
+	//http://54.68.13.217:8080/sharedreport#/sharedreport/4028808348ddd4bd0148ddd987a10000
     
     $scope.checkMobile = function() {
         var check = false;
