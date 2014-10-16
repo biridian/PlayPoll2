@@ -34,14 +34,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
  	    .authenticated()
  	    .and()
 		.formLogin()
-				.loginPage("/login")
-				.failureUrl("/login?error")
-				.permitAll();
+		.loginPage("/login")
+		.failureUrl("/login?error")
+		.permitAll();
 	}
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-	    web.ignoring().antMatchers("/fonts/**", "/samples/**", "/join/**", "/user**","/js/**", "/partials/**", "/response/**", "/sharedreport/**");
+	    web.ignoring().antMatchers("/fonts/**", "/samples/**", "/join/**", "/user**", "/partials/**", "/response/**", "/sharedreport/**");
 	    //  web.ignoring().antMatchers("/fonts/**", "/samples/**", "/join/**", "/user**", "/partials/**", "/response/**");
 		
 	}
