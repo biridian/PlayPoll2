@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-	    web.ignoring().antMatchers("/fonts/**", "/samples/**", "/join/**", "/user**", "/partials/**", "/response/**", "/sharedreport");
+	    web.ignoring().antMatchers("/fonts/**", "/samples/**", "/join/**", "/user**", "/partials/**", "/response/**", "/sharedreport/**");
 	    //  web.ignoring().antMatchers("/fonts/**", "/samples/**", "/join/**", "/user**", "/partials/**", "/response/**");
 		
 	}
