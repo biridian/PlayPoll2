@@ -15,14 +15,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 @Order(Ordered.LOWEST_PRECEDENCE - 8)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	UserDetailsService userService;
+	//@Autowired
+	//UserDetailsService userService;
 
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userService)
-				.passwordEncoder(new Md5PasswordEncoder());
-	}
+	//@Autowired
+	//public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+	//	auth.userDetailsService(userService)
+	//			.passwordEncoder(new Md5PasswordEncoder());
+	//}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
