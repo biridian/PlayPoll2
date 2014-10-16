@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.disable()
 	    .authorizeRequests()
 	    .antMatchers("/login", "/logout", "/user", "/request/**","/js/**", "/sharedreport").permitAll()
- 	    .anyRequest().authenticated()
+ 	   // .anyRequest().authenticated()
  	    .and()
 		.formLogin()
 		.loginPage("/login")
