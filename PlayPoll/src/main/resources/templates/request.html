@@ -34,11 +34,11 @@
   	<p class="alert alert-danger">설문이 종료되었습니다.</p>
   </div>
   
-  <div th:if="${survey.status} != '03'" class="container">
+  <div th:if="${survey.status} != '03'" class="container" style="background-image: url('http://www.hiliverpool.com/assets/images/wedding-rings-wallpaper1.jpg'); background-size:cover">
     <div class="row" id="survey">
       <div class="col-md-12">
         <form th:action="@{${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + (#httpServletRequest.getServerPort() == 80 || #httpServletRequest.getServerPort() == 443 ? '' : ':' + #httpServletRequest.getServerPort()) + '/response/'} + ${survey.surveyId}}" action="" method="POST" id="ss-form" target="_self" onsubmit="">
-          <div class="panel panel-default">
+          <div class="panel panel-default"  >
             <div class="panel-heading">
               <h2 th:inline="text">
                 [[${survey.title}]]<br /> <small th:text="${survey.description}"></small>
