@@ -42,6 +42,7 @@
        
     </a>
    
+   <div ng-if="resultyn">
       <button type="button" id="kakao-link-btn" class="btn btn-default" ng-if="checkMobile()" ng-if ="resultyn"  ng-click="sendBykakao()" >
       <img src="/images/kakaolink_btn_medium.png" width="40" height="40" /> 
       </button>
@@ -60,12 +61,10 @@
   			<span class="sendErrorList" ng-repeat="emailResult in emailResults" ng-show="emailResult.isError">{{emailResult.message}}<br></span>
   		</div>
       
-    
-  		
-      </div>
-      
+     </div>
    
  
+</div>
 </div>
 
   
