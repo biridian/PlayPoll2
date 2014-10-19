@@ -23,9 +23,11 @@ surveyControllers.controller('SurveyController', ['$scope', '$rootScope', '$loca
       $scope.surveyTitle = null;
       $scope.createSurveyModal.modal('show');
     }
-
+    $scope.surveysubject = 'others';
+    $scope.surveyresult = 'N';
     $scope.createSurvey = function() {
       $scope.loading = true;
+      
       Survey.save({
         title : $scope.surveyTitle,
         result :  $scope.surveyresult,
