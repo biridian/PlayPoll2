@@ -29,20 +29,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf()
 		.disable()
 	    .authorizeRequests()
-	   // .antMatchers("/login", "/logout", "/user", "/request/**").permitAll()
-	    .antMatchers("/login", "/logout", "/user", "/request/**").permitAll()
- 			.anyRequest()
- 			.authenticated()
- 			.and()
+	    .antMatchers("/login", "/logout", "/user", "/request/**","/js/**", "/sharedreport").permitAll()
+ 	   // .anyRequest().authenticated()
+ 	    .and()
 		.formLogin()
-				.loginPage("/login")
-				.failureUrl("/login?error")
-				.permitAll();
+		.loginPage("/login")
+		.failureUrl("/login?error")
+		.permitAll();
 	}
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-	    web.ignoring().antMatchers("/fonts/**", "/samples/**", "/join/**", "/user**","/js/**", "/partials/**", "/response/**");
+	    web.ignoring().antMatchers("/fonts/**", "/samples/**", "/join/**", "/user**", "/partials/**", "/response/**", "/sharedreport/**");
 	    //  web.ignoring().antMatchers("/fonts/**", "/samples/**", "/join/**", "/user**", "/partials/**", "/response/**");
 		
 	}
