@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.sds.playpoll.domain.entity.Survey;
 import com.sds.playpoll.domain.entity.User;
+import com.sds.playpoll.domain.repository.AnswerRepository;
+import com.sds.playpoll.domain.repository.QuestionRepository;
 import com.sds.playpoll.domain.repository.SurveyRepository;
 
 @Service
@@ -16,6 +18,12 @@ public class SurveyService {
 	
 	@Autowired
 	protected SurveyRepository surveyRepository;
+	
+	@Autowired
+	protected QuestionRepository questionRepository;
+	
+	@Autowired
+	protected AnswerRepository answerRepository;
 	
 	public Iterable<Survey> getSurveys() {
 		return surveyRepository.findAll();
@@ -34,6 +42,10 @@ public class SurveyService {
 	}
 	
 	public void deleteSurvey(String id) {
+		Survey survey = new Survey();
+		survey.setSurveyId(id);
+		answerRepository.deleteBySurveyId(survey);
+		questionRepository.deleteBySurveyId(survey);
 		surveyRepository.delete(id);
 	}
 	
