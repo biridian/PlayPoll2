@@ -15,7 +15,7 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
-  
+ 
 </head>
 
 
@@ -33,12 +33,14 @@
   <div th:if="${survey.status} == '03'">
   	<p class="alert alert-danger">설문이 종료되었습니다.</p>
   </div>
+    
+  <div th:if="${survey.status} != '03'"  class="container" id="back"  style="background-size:contain;">
   
-  <div th:if="${survey.status} != '03'" class="container" style="background-image: url('http://www.hiliverpool.com/assets/images/wedding-rings-wallpaper1.jpg'); background-size:cover">
     <div class="row" id="survey">
+    
       <div class="col-md-12">
         <form th:action="@{${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + (#httpServletRequest.getServerPort() == 80 || #httpServletRequest.getServerPort() == 443 ? '' : ':' + #httpServletRequest.getServerPort()) + '/response/'} + ${survey.surveyId}}" action="" method="POST" id="ss-form" target="_self" onsubmit="">
-          <div class="panel panel-default"  >
+          <div class="panel panel-default" style="opacity:0.9;">
             <div class="panel-heading">
               <h2 th:inline="text">
                 [[${survey.title}]]<br /> <small th:text="${survey.description}"></small>
@@ -88,9 +90,11 @@
           <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-upload"></span> 보내기</button>
         </form>
       </div>
-    </div>
-    <br />  
+     
+    </div>  
   </div>
+ 
+
   <hr/>
   <footer class="text-center">
     <div class="container">
@@ -103,7 +107,32 @@
 <script th:inline="javascript">
 /*<![CDATA[*/
 checkCookie();
-//console.log(getCookie("playpoll_cookie"));
+
+var bgCurr = /*[[${survey.subject}]]*/;
+if(bgCurr=='wedding')
+{
+	console.log("wedding");
+	document.getElementById("back").style.backgroundImage = "url('http://www.hiliverpool.com/assets/images/wedding-rings-wallpaper1.jpg')";
+}
+
+else if(bgCurr=='dinner')
+{
+	console.log("dinner");
+	document.getElementById("back").style.backgroundImage = "url('http://www.vi-hotels.com/typo3temp/pics/1_53e5571164.jpg')";
+        
+}
+
+else if(bgCurr=='meeting')
+{
+	console.log("meeting");
+	document.getElementById("back").style.backgroundImage = "url('http://abhinavpmp.com/wp-content/uploads/meeting-with-agenda.jpg')";
+}
+
+else if(bgCurr=='emergency')
+{
+	console.log("emergency");
+	document.getElementById("back").style.backgroundImage = "url('http://thumbs.dreamstime.com/x/time-to-hurry-17950865.jpg')";
+}
 
 function getCookie(cName) {
 	cName = cName + '=';
@@ -134,7 +163,7 @@ function checkCookie() {
    
 }
 
-    
+
 /*]]>*/
 </script>
 

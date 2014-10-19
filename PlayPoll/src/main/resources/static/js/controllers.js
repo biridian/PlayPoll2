@@ -21,7 +21,6 @@ surveyControllers.controller('SurveyController', ['$scope', '$rootScope', '$loca
     $scope.openCreateSurveyModal = function() {
       $scope.loading = false;
       $scope.surveyTitle = null;
-      $scope.openYn = null;
       $scope.createSurveyModal.modal('show');
     }
 
@@ -30,6 +29,7 @@ surveyControllers.controller('SurveyController', ['$scope', '$rootScope', '$loca
       Survey.save({
         title : $scope.surveyTitle,
         result :  $scope.surveyresult,
+        subject : $scope.surveysubject,
         status : '01'
       }, function(data) {
         console.log('saved survey');
@@ -38,6 +38,7 @@ surveyControllers.controller('SurveyController', ['$scope', '$rootScope', '$loca
         $scope.createSurveyModal.modal('hide');
       });
       $scope.surveyTitle = angular.element('#poll-title'); //없어도 문제 없어보임
+      $scope.surveysubject = angular.element('#subject'); 
     }
 
     $scope.openSendSurveyModal = function(surveyId) {

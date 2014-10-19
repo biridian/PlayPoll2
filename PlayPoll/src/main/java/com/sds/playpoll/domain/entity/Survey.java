@@ -30,7 +30,7 @@ public class Survey {
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 	private String surveyId;
 	
-	@Column(nullable = false)
+    @Column(nullable = false)
     private String title;
     
     private String description;
@@ -41,6 +41,8 @@ public class Survey {
     @Column(nullable = false)
     private boolean result;
 
+    @Column(nullable = false)
+    private String subject;
     
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "survey")
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
@@ -112,6 +114,14 @@ public class Survey {
 		this.result = result;
 	}
 
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+	
 
 	public User getCreatedBy() {
 		return createdBy;
@@ -147,7 +157,7 @@ public class Survey {
 
 	@Override
 	public String toString() {
-		return "Survey [surveyId=" + surveyId + "result =" + result +   ", title=" + title + ", description=" + description + ", status=" + status + ", questions=" + questions + ", createdBy=" + createdBy + ", createdDate=" + createdDate + ", lastModifiedDate=" + lastModifiedDate + "]";
+		return "Survey [surveyId=" + surveyId + ",result =" + result  + ",subject =" + subject +   ", title=" + title + ", description=" + description + ", status=" + status + ", questions=" + questions + ", createdBy=" + createdBy + ", createdDate=" + createdDate + ", lastModifiedDate=" + lastModifiedDate + "]";
 	}
 	
 }
