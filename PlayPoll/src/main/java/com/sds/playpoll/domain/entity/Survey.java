@@ -38,7 +38,7 @@ public class Survey {
     @Column(nullable = false)
     private String status;
     
-    @Column(nullable = false)
+  
     private boolean result;
 
     @Column(nullable = false)
